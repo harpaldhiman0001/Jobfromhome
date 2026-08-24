@@ -3,468 +3,887 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JobFromHome.in — India's #1 Work From Home Platform | Coming Soon</title>
-<meta name="description" content="India's new platform for remote jobs and freelance work is launching soon. Register your interest and get FREE 2 months when we launch — instead of 1.">
-<meta name="keywords" content="work from home jobs india, freelance jobs india, remote jobs india, ghar baithe kaam, online jobs india 2026">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://jobfromhome.in/">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://jobfromhome.in/">
-<meta property="og:title" content="JobFromHome.in — Launching Soon 🚀">
-<meta property="og:description" content="India's new work-from-home platform. Register now and get 2 months FREE at launch instead of 1.">
-<meta property="og:image" content="https://jobfromhome.in/og-image.jpg">
+<title>JobFromHome.in — Launching September 2026 | Remote Jobs & Hiring in India</title>
+<meta name="description" content="India's platform for remote jobs and work-from-home hiring. Register early — get 2 months free instead of 1.">
+<meta property="og:title" content="JobFromHome.in — Launching Soon">
+<meta property="og:description" content="Find remote work or hire remote talent. India's new work-from-home platform.">
 <meta property="og:locale" content="en_IN">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/png" href="/favicon.png">
-<meta name="theme-color" content="#2563eb">
+<link rel="canonical" href="https://jobfromhome.in/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "JobFromHome.in",
-  "url": "https://jobfromhome.in",
-  "description": "India's work-from-home job and freelance project platform — launching soon"
-}
-</script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
 <style>
+/* ─── RESET ─────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#181125;--surface:#221a33;--card:#271d3c;
-  --border:#3a2c54;--blue:#7c6ff2;--blue-light:#9b8ff7;
-  --green:#3fae7a;--orange:#f0a83c;--cyan:#f0a83c;
-  --text:#f9f5ee;--muted:#8b7fa3;--soft:#c4b8d9;
-  --marigold:#f0a83c;--rose:#e8654a
+img{display:block}
+button{font-family:inherit;cursor:pointer}
+input{font-family:inherit}
+
+/* ─── TOKENS ─────────────────────────────── */
+:root {
+  --ink:       #0F0F0E;
+  --ink-2:     #3A3A38;
+  --ink-3:     #6B6B67;
+  --paper:     #FAFAF7;
+  --surface:   #FFFFFF;
+  --border:    #E4E0D6;
+  --border-s:  #C8C3B8;
+
+  --yellow:    #F5A623;
+  --yellow-dk: #D4881A;
+  --yellow-bg: #FFF8E8;
+  --yellow-bd: #F0D990;
+
+  --green:     #15803D;
+  --green-lt:  #F0FAF4;
+  --green-bd:  #A7F3C8;
+
+  --blue:      #1D4ED8;
+  --blue-lt:   #EFF6FF;
+  --blue-bd:   #BFDBFE;
+
+  --radius:    12px;
 }
-body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;position:relative}
-.display{font-family:'Fraunces',serif}
 
-/* BACKGROUND */
-.bg-grid{position:fixed;inset:0;background-image:linear-gradient(rgba(37,99,235,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(37,99,235,.06) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
-.bg-glow{position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(124,111,242,.14) 0%,transparent 70%);top:-100px;left:50%;transform:translateX(-50%);pointer-events:none;z-index:0}
-.bg-glow2{position:fixed;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(240,168,60,.10) 0%,transparent 70%);bottom:-50px;right:-100px;pointer-events:none;z-index:0}
+/* ─── BASE ─────────────────────────────── */
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
 
-/* MAIN */
-main{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px}
+/* ─── HEADER ─────────────────────────────── */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 40px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
 
-/* LOGO */
-.logo{display:flex;align-items:center;gap:12px;font-family:'Fraunces',serif;font-size:23px;font-weight:600;letter-spacing:-.5px;margin-bottom:12px;text-decoration:none;color:var(--text)}
-.logo-mark{width:42px;height:42px;border-radius:50%;background:var(--marigold);display:flex;align-items:center;justify-content:center;font-size:19px;color:#181125;font-weight:800;font-family:'Fraunces',serif}
-.logo em{color:var(--marigold);font-style:italic}
-.made-by-line{font-size:12px;color:var(--muted);margin-bottom:36px;display:flex;align-items:center;gap:8px}
-.made-by-avatars{display:flex}
-.made-by-avatars img{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--bg);margin-left:-7px;object-fit:cover}
-.made-by-avatars img:first-child{margin-left:0}
+.logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.logo-accent { color: var(--yellow); }
 
-/* HERO TEXT */
-.hero{text-align:center;max-width:680px;margin-bottom:48px}
-.launch-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.25);border-radius:100px;padding:6px 18px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#34d399;margin-bottom:24px}
-.pulse-dot{width:7px;height:7px;border-radius:50%;background:#10b981;animation:pulse 1.4s ease infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
-h1{font-family:'Fraunces',serif;font-size:clamp(34px,6vw,62px);font-weight:600;letter-spacing:-1.5px;line-height:1.05;margin-bottom:20px}
-.hl{color:var(--marigold);font-style:italic}
-.hl2{color:var(--rose);font-style:italic}
-.hero-sub{font-size:clamp(15px,2vw,18px);color:var(--soft);line-height:1.7;max-width:540px;margin:0 auto 28px}
-.hero-sub .note{display:block;font-size:13px;color:var(--muted);margin-top:10px;font-style:italic}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
 
-/* EARLY BIRD OFFER */
-.offer-box{background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(239,68,68,.07));border:1px solid rgba(245,158,11,.25);border-radius:14px;padding:16px 24px;display:inline-flex;align-items:center;gap:14px;margin-bottom:36px;max-width:480px}
-.offer-icon{font-size:28px;flex-shrink:0}
-.offer-text{text-align:left}
-.offer-title{font-size:14px;font-weight:800;color:#fbbf24;margin-bottom:2px}
-.offer-desc{font-size:12px;color:var(--soft);line-height:1.5}
-.offer-badge{background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.35);border-radius:6px;padding:2px 8px;font-size:10px;font-weight:700;color:#fbbf24;white-space:nowrap;margin-left:auto;flex-shrink:0}
+.live-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-2);
+  background: var(--paper);
+  border: 1px solid var(--border-s);
+  border-radius: 100px;
+  padding: 6px 14px;
+  letter-spacing: 0.01em;
+}
 
-/* FORM */
-.form-wrap{width:100%;max-width:500px;margin-bottom:32px}
-.form-row{display:flex;gap:10px}
-.form-input{flex:1;padding:14px 18px;background:var(--card);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:inherit;font-size:14px;outline:none;transition:border-color .15s}
-.form-input:focus{border-color:var(--marigold)}
-.form-input::placeholder{color:var(--muted)}
-.form-btn{padding:14px 24px;border-radius:10px;border:none;background:var(--marigold);color:#181125;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap;position:relative;overflow:hidden;min-width:160px}
-.form-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 20px rgba(240,168,60,.35)}
-.form-btn:disabled{opacity:.7;cursor:not-allowed;transform:none}
-.form-btn .btn-spinner{display:none;width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
-.form-btn.loading .btn-text{opacity:0}
-.form-btn.loading .btn-spinner{display:block}
-@keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
-.form-role{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-.role-opt{background:var(--card);border:1.5px solid var(--border);border-radius:8px;padding:10px 8px;text-align:center;cursor:pointer;transition:all .15s;font-size:12px;font-weight:600;color:var(--muted)}
-.role-opt:hover,.role-opt.on{border-color:var(--marigold);color:var(--text);background:rgba(240,168,60,.1)}
-.role-opt .role-emoji{display:block;font-size:18px;margin-bottom:4px}
-.form-note{font-size:11px;color:var(--muted);text-align:center;margin-top:10px}
-/* success */
-.success-box{display:none;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);border-radius:14px;padding:24px 28px;text-align:center;max-width:500px;width:100%}
-.success-icon{font-size:44px;margin-bottom:12px}
-.success-title{font-size:20px;font-weight:800;margin-bottom:6px}
-.success-sub{font-size:13px;color:var(--soft);margin-bottom:16px;line-height:1.6}
-.share-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-.share-btn{padding:9px 18px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:none;font-family:inherit;transition:all .14s}
-.share-wa{background:#25d366;color:#fff}
-.share-wa:hover{background:#1da851}
-.share-copy{background:var(--card);border:1px solid var(--border);color:var(--soft)}
-.share-copy:hover{border-color:var(--blue-light);color:var(--text)}
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #EF4444;
+  animation: pulse 1.4s ease infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0.35; }
+}
 
-/* COUNTER */
-.counter-row{display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:48px}
-.counter-avatars{display:flex}
-.counter-avatar{width:32px;height:32px;border-radius:50%;border:2px solid var(--bg);font-size:14px;display:flex;align-items:center;justify-content:center;margin-left:-8px;background:var(--card)}
-.counter-avatar:first-child{margin-left:0}
-.counter-text{font-size:13px;color:var(--soft)}
-.counter-text strong{color:var(--text)}
-.counter-num{font-size:13px;font-weight:800;color:var(--green);background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);border-radius:6px;padding:2px 8px}
+.header-count {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.header-count strong {
+  color: var(--green);
+  font-weight: 700;
+}
 
-/* FEATURES ROW */
-.features{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;max-width:700px;margin-bottom:48px}
-.feat{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--soft)}
-.feat-icon{font-size:16px}
-.feat strong{color:var(--text)}
+/* ─── HERO ─────────────────────────────── */
+.hero {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 72px 24px 52px;
+  text-align: center;
+}
 
-/* COUNTDOWN */
-.countdown-wrap{margin-bottom:40px;text-align:center}
-.countdown-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
-.countdown{display:flex;gap:12px;justify-content:center}
-.cd-unit{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 18px;min-width:70px;text-align:center}
-.cd-num{font-size:28px;font-weight:900;letter-spacing:-1px;color:var(--text);font-variant-numeric:tabular-nums}
-.cd-label{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--yellow-dk);
+  background: var(--yellow-bg);
+  border: 1px solid var(--yellow-bd);
+  border-radius: 100px;
+  padding: 5px 14px;
+  margin-bottom: 28px;
+}
 
-/* SHARE SECTION */
-.share-section{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 28px;max-width:500px;width:100%;text-align:center;margin-bottom:32px}
-.share-title{font-size:15px;font-weight:800;margin-bottom:6px}
-.share-sub{font-size:12px;color:var(--soft);margin-bottom:16px}
-.share-link-box{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--cyan);font-family:monospace;margin-bottom:12px;word-break:break-all}
-.wa-big{width:100%;padding:12px;border-radius:10px;border:none;background:#25d366;color:#fff;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;transition:all .14s;display:flex;align-items:center;justify-content:center;gap:8px}
-.wa-big:hover{background:#1da851;transform:translateY(-1px)}
+h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(38px, 6.5vw, 72px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.0;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+h1 .hl { color: var(--yellow); }
 
-/* FOUNDER NOTE */
-.founder-note{max-width:560px;width:100%;margin-bottom:48px;padding:28px 30px;background:var(--surface);border:1px solid var(--border);border-radius:16px;position:relative}
-.founder-note::before{content:'"';position:absolute;top:6px;left:20px;font-family:'Fraunces',serif;font-size:64px;color:var(--marigold);opacity:.25;line-height:1}
-.founder-quote{font-family:'Fraunces',serif;font-style:italic;font-size:17px;line-height:1.6;color:var(--text);margin-bottom:16px;position:relative;z-index:1}
-.founder-who{display:flex;align-items:center;gap:12px}
-.founder-who img{width:44px;height:44px;border-radius:50%;object-fit:cover;border:1.5px solid var(--border)}
-.founder-name{font-size:13px;font-weight:700;color:var(--text)}
-.founder-role{font-size:12px;color:var(--muted)}
+.hero-sub {
+  font-size: clamp(15px, 1.8vw, 17px);
+  color: var(--ink-3);
+  line-height: 1.65;
+  max-width: 500px;
+  margin: 0 auto 28px;
+}
 
-/* TEAM STRIP */
-.team-wrap{max-width:600px;width:100%;margin-bottom:48px;text-align:center}
-.team-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
-.team-grid{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
-.team-card{width:130px;text-align:center}
-.team-card img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--border);margin-bottom:8px}
-.team-name{font-size:13px;font-weight:700;color:var(--text)}
-.team-role{font-size:11px;color:var(--muted);line-height:1.4}
+.early-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  background: var(--yellow-bg);
+  border: 1px solid var(--yellow-bd);
+  border-radius: 9px;
+  padding: 10px 18px;
+}
+.early-note strong { color: var(--yellow-dk); font-weight: 700; }
 
-/* FOOTER */
-.foot{text-align:center;font-size:12px;color:var(--muted);margin-top:auto;padding-top:32px}
-.foot a{color:var(--muted);text-decoration:none}
-.foot a:hover{color:var(--text)}
+/* ─── SPLIT SECTION ─────────────────────────────── */
+.split-wrap {
+  max-width: 980px;
+  margin: 0 auto 80px;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 52px 1fr;
+  align-items: stretch;
+  gap: 0;
+}
 
-@media(max-width:540px){.form-row{flex-direction:column}.form-btn{width:100%}.features{flex-direction:column;align-items:center}}
+/* Panel */
+.panel {
+  border-radius: var(--radius);
+  padding: 40px 36px;
+  border: 2px solid transparent;
+  transition: box-shadow 0.2s;
+}
+.panel:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.07); }
+
+.panel-seeker   { background: var(--green-lt); border-color: var(--green-bd); }
+.panel-recruiter{ background: var(--blue-lt);  border-color: var(--blue-bd);  }
+
+.panel-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 6px;
+  padding: 4px 10px;
+  margin-bottom: 18px;
+}
+.seeker-tag   { background: #DCFCE7; color: var(--green); }
+.recruiter-tag{ background: #DBEAFE; color: var(--blue);  }
+
+.panel-heading {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(22px, 2.8vw, 30px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.panel-body {
+  font-size: 14px;
+  color: var(--ink-2);
+  line-height: 1.65;
+  margin-bottom: 24px;
+}
+
+/* Perks */
+.perks {
+  list-style: none;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.perks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13.5px;
+  color: var(--ink-2);
+  line-height: 1.4;
+}
+.tick {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.tick-g { background: #DCFCE7; color: var(--green); }
+.tick-b { background: #DBEAFE; color: var(--blue);  }
+
+/* Form */
+.panel-form {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.f-input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border-s);
+  border-radius: 9px;
+  background: var(--surface);
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.f-input::placeholder { color: var(--ink-3); }
+.f-input:focus {
+  border-color: var(--yellow);
+  box-shadow: 0 0 0 3px rgba(245,166,35,0.15);
+}
+.f-input.err { border-color: #EF4444; }
+
+.panel-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 13px 20px;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all 0.15s;
+  margin-top: 2px;
+}
+.btn-seeker   { background: var(--green); color: #fff; }
+.btn-recruiter{ background: var(--blue);  color: #fff; }
+
+.btn-seeker:hover:not(:disabled)   { background: #166534; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(21,128,61,0.32); }
+.btn-recruiter:hover:not(:disabled){ background: #1E40AF; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(29,78,216,0.32); }
+.panel-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+.f-note {
+  font-size: 11px;
+  color: var(--ink-3);
+  text-align: center;
+}
+
+/* Success */
+.panel-success {
+  display: none;
+  padding: 12px 0;
+  text-align: center;
+}
+.success-emoji { font-size: 52px; margin-bottom: 16px; }
+.success-h {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+.success-p {
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.65;
+  margin-bottom: 20px;
+}
+.success-p strong { color: var(--ink); }
+
+/* Divider */
+.or-divider {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+.or-line {
+  width: 1px;
+  background: var(--border);
+  flex: 1;
+}
+.or-badge {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--yellow);
+  color: var(--ink);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin: 12px 0;
+  box-shadow: 0 2px 8px rgba(245,166,35,0.4);
+}
+
+/* ─── OFFER BAR ─────────────────────────────── */
+.offer-bar {
+  max-width: 980px;
+  margin: 0 auto 80px;
+  padding: 0 24px;
+}
+.offer-inner {
+  background: var(--yellow);
+  border-radius: var(--radius);
+  padding: 26px 36px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.offer-icon { font-size: 40px; line-height: 1; flex-shrink: 0; }
+.offer-text { flex: 1; min-width: 220px; }
+.offer-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.offer-desc {
+  font-size: 13.5px;
+  color: rgba(15,15,14,0.72);
+  line-height: 1.5;
+}
+.offer-price {
+  font-family: 'Space Grotesk', sans-serif;
+  text-align: right;
+  color: var(--ink);
+  flex-shrink: 0;
+}
+.offer-price .big {
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  display: block;
+  line-height: 1;
+}
+.offer-price .small {
+  font-size: 13px;
+  color: rgba(15,15,14,0.6);
+  margin-top: 3px;
+}
+
+/* ─── FEATURES ─────────────────────────────── */
+.features-wrap {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  padding: 52px 24px;
+  margin-bottom: 80px;
+}
+.features-grid {
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 40px;
+}
+.feat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.feat-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.feat-val {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+.feat-desc {
+  font-size: 12.5px;
+  color: var(--ink-3);
+  line-height: 1.55;
+}
+
+/* ─── COUNTDOWN ─────────────────────────────── */
+.countdown-wrap {
+  text-align: center;
+  padding: 0 24px 80px;
+}
+.section-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 24px;
+}
+.countdown {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.cd-unit {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  min-width: 84px;
+}
+.cd-num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  display: block;
+}
+.cd-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-top: 4px;
+}
+
+/* ─── SHARE ─────────────────────────────── */
+.share-wrap {
+  max-width: 520px;
+  margin: 0 auto 80px;
+  padding: 0 24px;
+}
+.share-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 36px;
+  text-align: center;
+}
+.share-h {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  margin-bottom: 10px;
+}
+.share-p {
+  font-size: 14px;
+  color: var(--ink-2);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.share-url {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 13px;
+  color: var(--blue);
+  background: var(--blue-lt);
+  border: 1px solid var(--blue-bd);
+  border-radius: 7px;
+  padding: 9px 14px;
+  margin-bottom: 16px;
+  word-break: break-all;
+  font-weight: 600;
+}
+.wa-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  background: #25D366;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-bottom: 8px;
+}
+.wa-btn:hover { background: #1DAA55; transform: translateY(-1px); }
+.copy-btn {
+  width: 100%;
+  padding: 11px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border-s);
+  background: transparent;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.copy-btn:hover { border-color: var(--ink); color: var(--ink); }
+
+/* ─── FOOTER ─────────────────────────────── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 28px 24px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--ink-3);
+  line-height: 1.7;
+}
+footer a { color: var(--ink-3); text-decoration: underline; text-underline-offset: 2px; }
+footer a:hover { color: var(--ink); }
+
+/* ─── MOBILE ─────────────────────────────── */
+@media (max-width: 680px) {
+  header { padding: 16px 20px; }
+  .header-count { display: none; }
+
+  .hero { padding: 48px 20px 36px; }
+
+  .split-wrap {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 0;
+  }
+  .panel {
+    border-radius: 0;
+    padding: 32px 22px;
+  }
+  .panel-seeker {
+    border-top: 2px solid var(--green-bd);
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+  .panel-recruiter {
+    border-bottom: 2px solid var(--blue-bd);
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+  }
+  .or-divider {
+    flex-direction: row;
+    padding: 0;
+  }
+  .or-line { width: auto; height: 1px; flex: 1; }
+
+  .offer-inner { flex-direction: column; padding: 24px 22px; gap: 16px; }
+  .offer-price { text-align: left; }
+
+  .features-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .countdown { gap: 7px; }
+  .cd-unit { padding: 14px 16px; min-width: 68px; }
+  .cd-num { font-size: 28px; }
+
+  .share-card { padding: 28px 22px; }
+}
+
+@media (max-width: 420px) {
+  h1 { font-size: 34px; letter-spacing: -0.025em; }
+  .features-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
-<div class="bg-grid" aria-hidden="true"></div>
-<div class="bg-glow" aria-hidden="true"></div>
-<div class="bg-glow2" aria-hidden="true"></div>
 
-<main>
-  <a href="/" class="logo" aria-label="JobFromHome.in">
-    <div class="logo-mark" aria-hidden="true">J</div>
-    JobFrom<em>Home</em>.in
-  </a>
-  <div class="made-by-line">
-    <div class="made-by-avatars" aria-hidden="true">
-      <img src="https://i.pravatar.cc/64?img=12" alt="" loading="lazy">
-      <img src="https://i.pravatar.cc/64?img=47" alt="" loading="lazy">
-      <img src="https://i.pravatar.cc/64?img=33" alt="" loading="lazy">
-    </div>
-    Built by a 3-person team in Gurugram — not a big company, just us
-  </div>
-
-  <!-- COUNTER (social proof) -->
-  <div class="counter-row">
-    <div class="counter-avatars" aria-hidden="true">
-      <img class="counter-avatar" src="https://i.pravatar.cc/64?img=5" alt="" loading="lazy" style="object-fit:cover">
-      <img class="counter-avatar" src="https://i.pravatar.cc/64?img=21" alt="" loading="lazy" style="object-fit:cover">
-      <img class="counter-avatar" src="https://i.pravatar.cc/64?img=44" alt="" loading="lazy" style="object-fit:cover">
-      <img class="counter-avatar" src="https://i.pravatar.cc/64?img=8" alt="" loading="lazy" style="object-fit:cover">
-    </div>
-    <span class="counter-text"><span class="counter-num" id="signupCount">127</span> <strong>people</strong> registered so far</span>
-  </div>
-
-  <!-- HERO -->
-  <div class="hero">
-    <div class="launch-badge">
-      <span class="pulse-dot"></span>
-      🚀 Launching Soon — Early Access Open
-    </div>
-    <h1>Work From<br><span class="hl">Home.</span> Hire From<br><span class="hl2">Home.</span></h1>
-    <p class="hero-sub">A place where job seekers, employers, and freelancers actually find each other. Post jobs, find remote work, get paid securely.<span class="note">Still in beta — we're onboarding our first employers by hand.</span></p>
-
-    <!-- EARLY BIRD OFFER -->
-    <div class="offer-box">
-      <span class="offer-icon">🎁</span>
-      <div class="offer-text">
-        <div class="offer-title">Early Bird Offer — Register Now</div>
-        <div class="offer-desc">Sign up before launch and get <strong style="color:#fbbf24">2 months FREE</strong> instead of the usual 1 month. Limited to first 500 registrations.</div>
-      </div>
-      <span class="offer-badge">EARLY BIRD</span>
+<!-- ── HEADER ── -->
+<header>
+  <a href="/" class="logo">JobFrom<span class="logo-accent">Home</span>.in</a>
+  <div class="header-right">
+    <span class="header-count">🇮🇳 <strong id="hdrCount">47</strong> registered so far</span>
+    <div class="live-pill">
+      <span class="live-dot"></span>
+      Early access open
     </div>
   </div>
+</header>
 
-  <!-- FORM -->
-  <div class="form-wrap" id="formWrap">
-    <div class="form-row">
-      <input class="form-input" type="text" id="nameIn" placeholder="Your full name" autocomplete="name">
-      <input class="form-input" type="tel" id="phoneIn" placeholder="WhatsApp number" autocomplete="tel">
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="eyebrow">🚀 Launching September 2026</div>
+  <h1>India's platform for<br>remote work — <span class="hl">both<br>sides of the table.</span></h1>
+  <p class="hero-sub">Job seekers find verified work-from-home roles. Employers find reliable remote talent. One platform, built for India.</p>
+  <div class="early-note">🎁 First 500 signups — <strong>2 months free</strong> instead of the usual 1. No card needed.</div>
+</section>
+
+<!-- ── SPLIT PANEL ── -->
+<div class="split-wrap">
+
+  <!-- LEFT: Seeker -->
+  <div class="panel panel-seeker">
+    <div class="panel-tag seeker-tag">👋 Looking for work</div>
+    <h2 class="panel-heading">Find remote work<br>that fits your life</h2>
+    <p class="panel-body">Browse verified work-from-home jobs and freelance gigs — apply directly, no gatekeepers.</p>
+
+    <ul class="perks">
+      <li><span class="tick tick-g">✓</span> All listings manually verified — no fake posts</li>
+      <li><span class="tick tick-g">✓</span> Apply directly to employers, zero middlemen</li>
+      <li><span class="tick tick-g">✓</span> WhatsApp alerts the moment a job matches you</li>
+      <li><span class="tick tick-g">✓</span> Free to use for your first 2 months (early signup)</li>
+    </ul>
+
+    <div class="panel-form" id="seekerForm">
+      <input class="f-input" id="s-name"  placeholder="Your full name"          autocomplete="name">
+      <input class="f-input" id="s-phone" placeholder="WhatsApp number"          autocomplete="tel"   inputmode="tel">
+      <input class="f-input" id="s-email" placeholder="Email address"            autocomplete="email" inputmode="email">
+      <button class="panel-btn btn-seeker" id="seekerBtn" onclick="submit('seeker')">
+        Get early access — free →
+      </button>
+      <p class="f-note">No spam. You'll hear from us on WhatsApp when we launch.</p>
     </div>
-    <div class="form-row" style="margin-top:10px">
-      <input class="form-input" type="email" id="emailIn" placeholder="Email address" autocomplete="email">
+
+    <div class="panel-success" id="seekerSuccess">
+      <div class="success-emoji">🎉</div>
+      <div class="success-h">You're in!</div>
+      <p class="success-p">We'll WhatsApp you the moment we go live. Your <strong>2 months free</strong> is locked in by name.<br><br>Share with a friend — you both earn +3 extra days.</p>
+      <button class="panel-btn btn-seeker" style="width:100%" onclick="shareWA()">Share on WhatsApp → +3 free days</button>
     </div>
-    <div class="form-role" style="margin-top:10px">
-      <div class="role-opt on" onclick="selectRole('seeker',this)">
-        <span class="role-emoji">🔍</span>
-        Looking for Work
-      </div>
-      <div class="role-opt" onclick="selectRole('poster',this)">
-        <span class="role-emoji">📢</span>
-        Hiring / Posting
-      </div>
-      <div class="role-opt" onclick="selectRole('freelancer',this)">
-        <span class="role-emoji">⚡</span>
-        Freelancer
-      </div>
+  </div>
+
+  <!-- DIVIDER -->
+  <div class="or-divider">
+    <div class="or-line"></div>
+    <div class="or-badge">OR</div>
+    <div class="or-line"></div>
+  </div>
+
+  <!-- RIGHT: Recruiter -->
+  <div class="panel panel-recruiter">
+    <div class="panel-tag recruiter-tag">🏢 Looking to hire</div>
+    <h2 class="panel-heading">Hire reliable remote<br>talent — no drama</h2>
+    <p class="panel-body">Post work-from-home roles and reach people who genuinely want this kind of work. No noise, no fake profiles.</p>
+
+    <ul class="perks">
+      <li><span class="tick tick-b">✓</span> Verified candidate profiles only</li>
+      <li><span class="tick tick-b">✓</span> Secure freelance payments via Razorpay escrow</li>
+      <li><span class="tick tick-b">✓</span> GST invoices · INR payments · 100% legal</li>
+      <li><span class="tick tick-b">✓</span> First job post free — ₹670/month after your trial</li>
+    </ul>
+
+    <div class="panel-form" id="recruiterForm">
+      <input class="f-input" id="r-name"  placeholder="Your name"               autocomplete="name">
+      <input class="f-input" id="r-phone" placeholder="WhatsApp number"          autocomplete="tel"   inputmode="tel">
+      <input class="f-input" id="r-email" placeholder="Work email"               autocomplete="email" inputmode="email">
+      <button class="panel-btn btn-recruiter" id="recruiterBtn" onclick="submit('recruiter')">
+        Register to hire — free trial →
+      </button>
+      <p class="f-note">We'll contact you before launch to set up your employer account.</p>
     </div>
-    <button class="form-btn" id="submitBtn" onclick="submitForm()" style="width:100%;margin-top:10px">
-      <span class="btn-text">🚀 Get Early Access — 2 Months FREE</span>
-      <div class="btn-spinner"></div>
+
+    <div class="panel-success" id="recruiterSuccess">
+      <div class="success-emoji">👍</div>
+      <div class="success-h">Registered!</div>
+      <p class="success-p">We'll WhatsApp you before launch to set up your employer account. <strong>First job post is on us.</strong><br><br>Know a fellow employer? They'll thank you.</p>
+      <button class="panel-btn btn-recruiter" style="width:100%" onclick="shareWA()">Tell a colleague →</button>
+    </div>
+  </div>
+
+</div><!-- /split-wrap -->
+
+<!-- ── OFFER BAR ── -->
+<div class="offer-bar">
+  <div class="offer-inner">
+    <div class="offer-icon">🎁</div>
+    <div class="offer-text">
+      <div class="offer-title">Early Bird — First 500 registrations only</div>
+      <div class="offer-desc">Sign up before launch and your first 2 months are completely free. After that it's ₹670/month — cancel any time, no lock-in, no questions asked.</div>
+    </div>
+    <div class="offer-price">
+      <span class="big">₹0</span>
+      <span class="small">for 2 months</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── FEATURES ── -->
+<div class="features-wrap">
+  <div class="features-grid">
+    <div class="feat">
+      <div class="feat-label">For job seekers</div>
+      <div class="feat-val">Always free to apply</div>
+      <div class="feat-desc">Browse and apply to any listing without paying a rupee. Ever.</div>
+    </div>
+    <div class="feat">
+      <div class="feat-label">For employers</div>
+      <div class="feat-val">₹670 / month</div>
+      <div class="feat-desc">Unlimited job posts after your free trial. GST invoices on every billing cycle.</div>
+    </div>
+    <div class="feat">
+      <div class="feat-label">Payments</div>
+      <div class="feat-val">Razorpay Escrow</div>
+      <div class="feat-desc">Freelance payments held safely until work is done and approved.</div>
+    </div>
+    <div class="feat">
+      <div class="feat-label">Job alerts</div>
+      <div class="feat-val">WhatsApp-first</div>
+      <div class="feat-desc">No app to download. Get notified on WhatsApp the moment something relevant appears.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── COUNTDOWN ── -->
+<div class="countdown-wrap">
+  <div class="section-eyebrow">Launching in</div>
+  <div class="countdown">
+    <div class="cd-unit"><span class="cd-num" id="cdD">--</span><div class="cd-lbl">Days</div></div>
+    <div class="cd-unit"><span class="cd-num" id="cdH">--</span><div class="cd-lbl">Hours</div></div>
+    <div class="cd-unit"><span class="cd-num" id="cdM">--</span><div class="cd-lbl">Mins</div></div>
+    <div class="cd-unit"><span class="cd-num" id="cdS">--</span><div class="cd-lbl">Secs</div></div>
+  </div>
+</div>
+
+<!-- ── SHARE ── -->
+<div class="share-wrap">
+  <div class="share-card">
+    <div class="share-h">Know someone job hunting?</div>
+    <p class="share-p">Send them this link — they get early access, and you earn +3 free days added to your trial for each person who registers.</p>
+    <div class="share-url">jobfromhome.in</div>
+    <button class="wa-btn" onclick="shareWA()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+      Share on WhatsApp
     </button>
-    <p class="form-note">No spam. We'll only message you when we launch. Your WhatsApp number is safe with us.</p>
+    <button class="copy-btn" id="copyBtn" onclick="copyLink()">Copy link</button>
   </div>
+</div>
 
-  <!-- SUCCESS BOX (hidden until submit) -->
-  <div class="success-box" id="successBox">
-    <div class="success-icon">🎉</div>
-    <div class="success-title">You're on the list!</div>
-    <p class="success-sub" id="successMsg">We'll WhatsApp you the moment we go live. You get <strong style="color:#fbbf24">2 months FREE</strong> — saved in your name.<br><br>Share with friends and earn <strong style="color:#34d399">+3 days extra</strong> for every person who registers through your link.</p>
-    <div class="share-row">
-      <button class="share-btn share-wa" onclick="shareWhatsApp()">📱 Share on WhatsApp</button>
-      <button class="share-btn share-copy" id="copyBtn" onclick="copyLink()">🔗 Copy Link</button>
-    </div>
-  </div>
-
-  <!-- FEATURES -->
-  <div class="features">
-    <div class="feat"><span class="feat-icon">✅</span><strong>Free</strong> for 1 month (2 for early birds)</div>
-    <div class="feat"><span class="feat-icon">💰</span><strong>₹670/month</strong> after trial</div>
-    <div class="feat"><span class="feat-icon">🔐</span><strong>Razorpay</strong> secure payments</div>
-    <div class="feat"><span class="feat-icon">📱</span><strong>WhatsApp</strong> job alerts</div>
-    <div class="feat"><span class="feat-icon">🎁</span><strong>+3 days</strong> per referral</div>
-    <div class="feat"><span class="feat-icon">🇮🇳</span><strong>INR</strong> payments · GST invoices</div>
-  </div>
-
-  <!-- FOUNDER NOTE -->
-  <div class="founder-note">
-    <p class="founder-quote">We kept losing good people to Bangalore and Delhi because there was no honest way to find remote work from a smaller town. So we're building the platform we wished existed — real jobs, real employers, no fake listings.</p>
-    <div class="founder-who">
-      <img src="https://i.pravatar.cc/88?img=12" alt="Photo of Aakash Verma, co-founder">
-      <div>
-        <div class="founder-name">Aakash Verma</div>
-        <div class="founder-role">Co-founder, JobFromHome.in</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TEAM -->
-  <div class="team-wrap">
-    <div class="team-label">The people building this</div>
-    <div class="team-grid">
-      <div class="team-card">
-        <img src="https://i.pravatar.cc/128?img=12" alt="Photo of Aakash Verma" loading="lazy">
-        <div class="team-name">Aakash</div>
-        <div class="team-role">Product &amp; hiring partnerships</div>
-      </div>
-      <div class="team-card">
-        <img src="https://i.pravatar.cc/128?img=47" alt="Photo of Priya Nair" loading="lazy">
-        <div class="team-name">Priya</div>
-        <div class="team-role">Engineering</div>
-      </div>
-      <div class="team-card">
-        <img src="https://i.pravatar.cc/128?img=33" alt="Photo of Rohit Malhotra" loading="lazy">
-        <div class="team-name">Rohit</div>
-        <div class="team-role">Support on WhatsApp</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- COUNTDOWN -->
-  <div class="countdown-wrap">
-    <div class="countdown-label">Launching In</div>
-    <div class="countdown">
-      <div class="cd-unit"><div class="cd-num" id="cdDays">30</div><div class="cd-label">Days</div></div>
-      <div class="cd-unit"><div class="cd-num" id="cdHours">00</div><div class="cd-label">Hours</div></div>
-      <div class="cd-unit"><div class="cd-num" id="cdMins">00</div><div class="cd-label">Mins</div></div>
-      <div class="cd-unit"><div class="cd-num" id="cdSecs">00</div><div class="cd-label">Secs</div></div>
-    </div>
-  </div>
-
-  <!-- SHARE SECTION -->
-  <div class="share-section">
-    <div class="share-title">📣 Know someone looking for work?</div>
-    <div class="share-sub">Share this with them — they'll thank you later. And you get +3 free days when they register.</div>
-    <div class="share-link-box">jobfromhome.in</div>
-    <button class="wa-big" onclick="shareWhatsApp()">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Share on WhatsApp — Help a Friend Find Work
-    </button>
-  </div>
-
-  <footer class="foot">
-    <p>© 2026 JobFromHome.in &nbsp;·&nbsp; <a href="/terms.html">Terms</a> &nbsp;·&nbsp; <a href="mailto:support@jobfromhome.in">support@jobfromhome.in</a> &nbsp;·&nbsp; 🇮🇳 Made in India</p>
-  </footer>
-</main>
+<!-- ── FOOTER ── -->
+<footer>
+  <p>© 2026 JobFromHome.in &nbsp;·&nbsp; <a href="mailto:support@jobfromhome.in">support@jobfromhome.in</a> &nbsp;·&nbsp; <a href="/terms.html">Terms &amp; Privacy</a> &nbsp;·&nbsp; 🇮🇳 Made in India</p>
+</footer>
 
 <script>
-// ── CONFIG ──
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQ-PpxYJtLcPdFPiyWKswD-X0c6tJa6D3HAvrJJnUaf1lxPrEkoEOqmWkKq_6LRbODeg/exec';
+// ─── CONFIG
+const SCRIPT_URL  = 'https://script.google.com/macros/s/AKfycbwQ-PpxYJtLcPdFPiyWKswD-X0c6tJa6D3HAvrJJnUaf1lxPrEkoEOqmWkKq_6LRbODeg/exec';
 const LAUNCH_DATE = new Date('2026-09-15T00:00:00+05:30');
+let totalCount    = 47;
 
-let selectedRole = 'seeker';
-let submittedName = '';
+// ─── COUNTDOWN
+(function tick() {
+  const diff = LAUNCH_DATE - Date.now();
+  if (diff <= 0) {
+    document.querySelector('.countdown-wrap').innerHTML =
+      '<p style="font-family:\'Space Grotesk\',sans-serif;font-size:22px;font-weight:700;color:var(--green)">🚀 We\'re live — refresh this page!</p>';
+    return;
+  }
+  document.getElementById('cdD').textContent = String(Math.floor(diff/86400000)).padStart(2,'0');
+  document.getElementById('cdH').textContent = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+  document.getElementById('cdM').textContent = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+  document.getElementById('cdS').textContent = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+  setTimeout(tick, 1000);
+})();
 
-// ── ROLE SELECTION ──
-function selectRole(role, el) {
-  selectedRole = role;
-  document.querySelectorAll('.role-opt').forEach(r => r.classList.remove('on'));
-  el.classList.add('on');
-}
+// ─── FORM SUBMIT
+async function submit(role) {
+  const p  = role === 'seeker' ? 's' : 'r';
+  const nEl = document.getElementById(p+'-name');
+  const phEl= document.getElementById(p+'-phone');
+  const emEl= document.getElementById(p+'-email');
 
-// ── FORM SUBMIT ──
-async function submitForm() {
-  const name  = document.getElementById('nameIn').value.trim();
-  const phone = document.getElementById('phoneIn').value.trim();
-  const email = document.getElementById('emailIn').value.trim();
+  // Clear previous errors
+  [nEl, phEl, emEl].forEach(el => el.classList.remove('err'));
 
-  if (!name)  { shake('nameIn');  return; }
-  if (!phone || phone.length < 10) { shake('phoneIn'); return; }
-  if (!email || !email.includes('@')) { shake('emailIn'); return; }
+  let ok = true;
+  if (!nEl.value.trim())                        { nEl.classList.add('err');  ok = false; }
+  if (phEl.value.trim().length < 10)            { phEl.classList.add('err'); ok = false; }
+  if (!emEl.value.trim().includes('@'))         { emEl.classList.add('err'); ok = false; }
+  if (!ok) return;
 
-  submittedName = name.split(' ')[0];
-  const btn = document.getElementById('submitBtn');
+  const btn = document.getElementById(role + 'Btn');
   btn.disabled = true;
-  btn.classList.add('loading');
+  btn.textContent = 'Saving…';
 
   try {
-    await callAPI({ action: 'earlyAccess', name, phone, email, role: selectedRole });
-  } catch(e) {
-    // Even if API fails, show success (save locally too)
-    console.log('API note:', e);
-  }
+    const r = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({
+        action: 'earlyAccess',
+        name:   nEl.value.trim(),
+        phone:  phEl.value.trim(),
+        email:  emEl.value.trim(),
+        role
+      })
+    });
+    await r.json();
+  } catch(e) { /* show success regardless — don't penalise for network blip */ }
 
-  // Always show success (don't penalise users for network issues)
-  showSuccess(name, phone);
-  btn.classList.remove('loading');
+  document.getElementById(role + 'Form').style.display    = 'none';
+  document.getElementById(role + 'Success').style.display = 'block';
 
-  // Increment counter
-  const counter = document.getElementById('signupCount');
-  const cur = parseInt(counter.textContent);
-  animateCount(counter, cur, cur + 1);
+  // Tick up counter
+  totalCount++;
+  document.getElementById('hdrCount').textContent = totalCount;
 }
 
-function showSuccess(name, phone) {
-  document.getElementById('formWrap').style.display = 'none';
-  const box = document.getElementById('successBox');
-  box.style.display = 'block';
-  document.getElementById('successMsg').innerHTML =
-    `Hi <strong>${name.split(' ')[0]}</strong>! We'll WhatsApp you on <strong>${phone}</strong> the moment we go live.<br><br>
-     You're guaranteed <strong style="color:#fbbf24">2 months FREE</strong> — saved in your name. 🎉<br><br>
-     Share with friends and earn <strong style="color:#34d399">+3 extra days</strong> for every person who registers.`;
-  box.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-
-// ── SHARE ──
-function shareWhatsApp() {
-  const msg = `🚀 JobFromHome.in launch ho raha hai — India ka #1 work from home platform!\n\n✅ Remote jobs, freelance projects, secure payments\n🎁 Register karo — pehle 500 logon ko 2 mahine FREE milenge!\n\n👉 jobfromhome.in\n\nMujhe refer kiya — toh mujhe +3 free days bhi milenge 😄`;
+// ─── SHARE
+function shareWA() {
+  const msg = `🚀 JobFromHome.in aa raha hai — India ka remote jobs platform!\n\n✅ Verified work-from-home jobs & freelance gigs\n🎁 Pehle 500 logon ko 2 mahine FREE!\n\n👉 jobfromhome.in`;
   window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 
 function copyLink() {
   navigator.clipboard.writeText('https://jobfromhome.in').then(() => {
-    const btn = document.getElementById('copyBtn');
-    btn.textContent = '✓ Copied!';
-    setTimeout(() => btn.textContent = '🔗 Copy Link', 2000);
+    const b = document.getElementById('copyBtn');
+    b.textContent = '✓ Copied!';
+    setTimeout(() => b.textContent = 'Copy link', 2000);
   });
 }
 
-// ── COUNTDOWN ──
-function updateCountdown() {
-  const now  = new Date();
-  const diff = LAUNCH_DATE - now;
-  if (diff <= 0) {
-    document.querySelector('.countdown-wrap').innerHTML = '<div style="font-size:18px;font-weight:800;color:#10b981">🚀 We are LIVE! Refresh the page.</div>';
-    return;
-  }
-  const days  = Math.floor(diff / 86400000);
-  const hours = Math.floor((diff % 86400000) / 3600000);
-  const mins  = Math.floor((diff % 3600000) / 60000);
-  const secs  = Math.floor((diff % 60000) / 1000);
-  document.getElementById('cdDays').textContent  = String(days).padStart(2,'0');
-  document.getElementById('cdHours').textContent = String(hours).padStart(2,'0');
-  document.getElementById('cdMins').textContent  = String(mins).padStart(2,'0');
-  document.getElementById('cdSecs').textContent  = String(secs).padStart(2,'0');
-}
-setInterval(updateCountdown, 1000);
-updateCountdown();
-
-// ── COUNTER ANIMATION ──
-function animateCount(el, from, to) {
-  let cur = from;
-  const step = () => {
-    cur++;
-    el.textContent = cur;
-    if (cur < to) setTimeout(step, 60);
-  };
-  step();
-}
-
-// NOTE: the counter only moves when someone actually submits the form below
-// (see submitForm). Update the starting number by hand from your real signup
-// count instead of faking growth — it's a small thing but people notice.
-
-// ── SHAKE ANIMATION ──
-function shake(id) {
-  const el = document.getElementById(id);
-  el.style.borderColor = '#ef4444';
-  el.style.animation = 'shake .4s ease';
-  el.focus();
-  setTimeout(() => {
-    el.style.borderColor = '';
-    el.style.animation = '';
-  }, 600);
-}
-
-// ── API ──
-async function callAPI(data) {
-  if (!SCRIPT_URL || SCRIPT_URL.includes('YOUR_')) return { success: true };
-  const r = await fetch(SCRIPT_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify(data)
-  });
-  return r.json();
-}
-
-// ── ENTER KEY ──
-document.addEventListener('keydown', e => {
-  if (e.key === 'Enter') submitForm();
+// Remove error highlight on input
+document.querySelectorAll('.f-input').forEach(el => {
+  el.addEventListener('input', () => el.classList.remove('err'));
 });
-
-// ── SHAKE CSS ──
-const style = document.createElement('style');
-style.textContent = '@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}';
-document.head.appendChild(style);
 </script>
 </body>
 </html>
