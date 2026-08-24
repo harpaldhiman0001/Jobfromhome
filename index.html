@@ -806,7 +806,22 @@ footer a:hover { color: var(--ink); }
 // ─── CONFIG
 const SCRIPT_URL  = 'https://script.google.com/macros/s/AKfycbwQ-PpxYJtLcPdFPiyWKswD-X0c6tJa6D3HAvrJJnUaf1lxPrEkoEOqmWkKq_6LRbODeg/exec';
 const LAUNCH_DATE = new Date('2026-09-15T00:00:00+05:30');
-let totalCount    = 47;
+let totalCount    = 47; // fallback if sheet fetch fails
+
+// ─── LOAD REAL COUNT FROM SHEET ON PAGE LOAD
+// Uses GET (no-cors not needed for doGet — Apps Script sets CORS headers on GET)
+(async function loadCount() {
+  try {
+    const res  = await fetch(SCRIPT_URL + '?action=getCount');
+    const data = await res.json();
+    if (data.success && typeof data.count === 'number' && data.count > 0) {
+      totalCount = data.count;
+      document.getElementById('hdrCount').textContent = totalCount;
+    }
+  } catch(e) {
+    // silently fall back to default count
+  }
+})();
 
 // ─── COUNTDOWN
 (function tick() {
@@ -825,7 +840,7 @@ let totalCount    = 47;
 
 // ─── FORM SUBMIT
 async function submit(role) {
-  const p  = role === 'seeker' ? 's' : 'r';
+  const p   = role === 'seeker' ? 's' : 'r';
   const nEl = document.getElementById(p+'-name');
   const phEl= document.getElementById(p+'-phone');
   const emEl= document.getElementById(p+'-email');
@@ -834,34 +849,42 @@ async function submit(role) {
   [nEl, phEl, emEl].forEach(el => el.classList.remove('err'));
 
   let ok = true;
-  if (!nEl.value.trim())                        { nEl.classList.add('err');  ok = false; }
-  if (phEl.value.trim().length < 10)            { phEl.classList.add('err'); ok = false; }
-  if (!emEl.value.trim().includes('@'))         { emEl.classList.add('err'); ok = false; }
+  if (!nEl.value.trim())               { nEl.classList.add('err');  ok = false; }
+  if (phEl.value.trim().length < 10)   { phEl.classList.add('err'); ok = false; }
+  if (!emEl.value.trim().includes('@')){ emEl.classList.add('err'); ok = false; }
   if (!ok) return;
 
   const btn = document.getElementById(role + 'Btn');
-  btn.disabled = true;
+  btn.disabled    = true;
   btn.textContent = 'Saving…';
 
-  try {
-    const r = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({
-        action: 'earlyAccess',
-        name:   nEl.value.trim(),
-        phone:  phEl.value.trim(),
-        email:  emEl.value.trim(),
-        role
-      })
-    });
-    await r.json();
-  } catch(e) { /* show success regardless — don't penalise for network blip */ }
+  const payload = JSON.stringify({
+    action: 'earlyAccess',
+    name:   nEl.value.trim(),
+    phone:  phEl.value.trim(),
+    email:  emEl.value.trim(),
+    role
+  });
 
+  try {
+    // ✅ mode:'no-cors' is required for POST to Google Apps Script from a browser.
+    // The response will be opaque (unreadable) but the data DOES reach the sheet.
+    await fetch(SCRIPT_URL, {
+      method:  'POST',
+      mode:    'no-cors',           // ← THE KEY FIX — without this, browser blocks the request
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body:    payload
+    });
+  } catch(e) {
+    // Network failure — still show success UI; data may have gone through
+    console.warn('Fetch error (network):', e);
+  }
+
+  // Show success panel regardless (don't penalise user for opaque response)
   document.getElementById(role + 'Form').style.display    = 'none';
   document.getElementById(role + 'Success').style.display = 'block';
 
-  // Tick up counter
+  // Optimistically tick up counter
   totalCount++;
   document.getElementById('hdrCount').textContent = totalCount;
 }
