@@ -76,7 +76,7 @@
   <script>
     const CONFIG = {
       APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwQ-PpxYJtLcPdFPiyWKswD-X0c6tJa6D3HAvrJJnUaf1lxPrEkoEOqmWkKq_6LRbODeg/exec',
-      ENABLE_APPS_SCRIPT: false,
+      ENABLE_APPS_SCRIPT: true,
       PAYMENT_API: '/api/razorpay'
     };
 
