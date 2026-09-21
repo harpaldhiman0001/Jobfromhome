@@ -1,4 +1,4 @@
-const DASHBOARD_CONFIG = { APPS_SCRIPT_URL: 'PASTE_YOUR_APPS_SCRIPT_EXEC_URL_HERE' };
+const DASHBOARD_CONFIG = { APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwQ-PpxYJtLcPdFPiyWKswD-X0c6tJa6D3HAvrJJnUaf1lxPrEkoEOqmWkKq_6LRbODeg/exec' };
 const token = sessionStorage.getItem('jfh_session_token');
 const loading = document.getElementById('loading');
 const dashboard = document.getElementById('dashboard');
