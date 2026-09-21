@@ -101,43 +101,68 @@
 async function saveLead(type, data) {
   if (
     !CONFIG.ENABLE_APPS_SCRIPT ||
+    !CONFIG.APPS_SCRIPT_URL ||
     CONFIG.APPS_SCRIPT_URL.includes('PASTE_YOUR')
   ) {
-    return { success: true, preview: true };
-  }
-
-  const response = await fetch(CONFIG.APPS_SCRIPT_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'text/plain;charset=utf-8'
-    },
-    body: JSON.stringify({
-      action: 'createLead',
-      leadType: type,
-      ...data
-    })
-  });
-
-  const responseText = await response.text();
-
-  let result;
-  try {
-    result = JSON.parse(responseText);
-  } catch (error) {
-    console.error('Apps Script returned non-JSON:', {
-      url: CONFIG.APPS_SCRIPT_URL,
-      status: response.status,
-      responseText
-    });
-
     throw new Error(
-      `Profile server returned HTML instead of JSON (HTTP ${response.status}). ` +
-      `Check Apps Script Web App URL, deployment access, and /exec ending.`
+      'Google Sheets backend is not connected. Add the Apps Script /exec URL and set ENABLE_APPS_SCRIPT to true.'
     );
   }
 
-  if (!response.ok || !result.success) {
-    throw new Error(result.error || 'Could not save your profile request.');
+  let response;
+
+  try {
+    response = await fetch(CONFIG.APPS_SCRIPT_URL, {
+      method: 'POST',
+      redirect: 'follow',
+      headers: {
+        'Content-Type': 'text/plain;charset=utf-8'
+      },
+      body: JSON.stringify({
+        action: 'createLead',
+        leadType: type,
+        ...data
+      })
+    });
+  } catch (networkError) {
+    console.error('Network request failed:', networkError);
+
+    throw new Error(
+      'Could not reach the Google Sheets backend. Check your Apps Script Web App URL and deployment access.'
+    );
+  }
+
+  const responseText = await response.text();
+
+  console.log('Apps Script response:', {
+    status: response.status,
+    url: response.url,
+    responseText
+  });
+
+  let result;
+
+  try {
+    result = JSON.parse(responseText);
+  } catch (parseError) {
+    console.error('Apps Script returned non-JSON:', responseText);
+
+    throw new Error(
+      `The profile backend returned HTML instead of JSON (HTTP ${response.status}). ` +
+      `Make sure you copied the deployed Apps Script Web App URL ending in /exec and set access to Anyone.`
+    );
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      result.error || `Profile server error. HTTP status: ${response.status}`
+    );
+  }
+
+  if (result.success !== true) {
+    throw new Error(
+      result.error || 'Google Sheets did not confirm that the profile was saved.'
+    );
   }
 
   return result;
@@ -145,14 +170,77 @@ async function saveLead(type, data) {
     function setMessage(id, text, error = false) { const el = document.getElementById(id); el.className = 'form-status field full ' + (error ? 'error' : 'success'); el.textContent = text; }
     function updateIdentity(data, isEmployer) { document.getElementById('sideName').textContent = data.fullName || data.contactName; document.getElementById('sideEmail').textContent = data.email || data.businessEmail; document.getElementById('avatar').textContent = (data.fullName || data.contactName || 'J').charAt(0).toUpperCase(); if (isEmployer) document.getElementById('employerStatus').textContent = 'REVIEW REQUESTED'; }
 
-    document.getElementById('seekerForm').addEventListener('submit', async event => {
-      event.preventDefault(); const form = event.currentTarget; const data = toObject(form);
-      if (!data.fullName || !data.headline || !data.skills || !validEmail(data.email) || !validPhone(data.phone)) return setMessage('seekerMessage', 'Enter all required information, a valid email, and a 10-digit Indian mobile number.', true);
-      const button = form.querySelector('button[type="submit"]'); button.disabled = true; button.textContent = 'Saving…';
-      try { const result = await saveLead('seeker', data); state.seekerSaved = true; state.seeker = data; updateIdentity(data, false); document.getElementById('seekerPayment').classList.remove('hidden'); setMessage('seekerMessage', result.preview ? 'Preview mode only: profile is not saved. Configure Apps Script before launch.' : 'Profile request saved. You can now activate the 30-day Apply Plan.'); }
-      catch (error) { setMessage('seekerMessage', error.message, true); }
-      finally { button.disabled = false; button.textContent = 'Save my profile'; }
-    });
+document.getElementById('seekerForm').addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const form = event.currentTarget;
+  const data = toObject(form);
+
+  if (
+    !data.fullName ||
+    !data.headline ||
+    !data.skills ||
+    !validEmail(data.email) ||
+    !validPhone(data.phone)
+  ) {
+    setMessage(
+      'seekerMessage',
+      'Enter all required details, a valid email, and a valid 10-digit Indian mobile number.',
+      true
+    );
+    return;
+  }
+
+  const button = form.querySelector('button[type="submit"]');
+
+  button.disabled = true;
+  button.textContent = 'Saving profile…';
+
+  setMessage('seekerMessage', 'Connecting to the profile server…');
+
+  try {
+    const result = await saveLead('seeker', data);
+
+    // Do not show payment or hide any part of the form before this line.
+    if (!result || result.success !== true) {
+      throw new Error(
+        result?.error || 'Profile was not confirmed by the server.'
+      );
+    }
+
+    if (result.preview === true) {
+      throw new Error(
+        'Preview mode is enabled. No data is being saved to Google Sheets. Set ENABLE_APPS_SCRIPT to true.'
+      );
+    }
+
+    state.seekerSaved = true;
+    state.seeker = data;
+
+    updateIdentity(data, false);
+
+    document.getElementById('seekerPayment').classList.remove('hidden');
+
+    setMessage(
+      'seekerMessage',
+      `Profile saved successfully. Your profile ID is ${result.id || 'created'}. You can now activate the Apply Plan.`
+    );
+
+    button.textContent = 'Profile saved ✓';
+
+  } catch (error) {
+    console.error('Seeker profile save failed:', error);
+
+    setMessage(
+      'seekerMessage',
+      error.message || 'Profile could not be saved. Please try again.',
+      true
+    );
+
+    button.disabled = false;
+    button.textContent = 'Save my profile';
+  }
+});
 
     document.getElementById('employerForm').addEventListener('submit', async event => {
       event.preventDefault(); const form = event.currentTarget; const data = toObject(form);
