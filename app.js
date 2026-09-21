@@ -5,7 +5,7 @@
   3. Keep ENABLE_API false to preview locally without saving data.
 */
 const CONFIG = {
-  API_URL: "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_EXEC_URL_HERE",
+  API_URL: "https://script.google.com/macros/s/AKfycbwQ-PpxYJtLcPdFPiyWKswD-X0c6tJa6D3HAvrJJnUaf1lxPrEkoEOqmWkKq_6LRbODeg/exec",
   ENABLE_API: false
 };
 
