@@ -1,912 +1,142 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JobFromHome.in — Launching September 2026 | Remote Jobs & Hiring in India</title>
-<meta name="description" content="India's platform for remote jobs and work-from-home hiring. Register early — get 2 months free instead of 1.">
-<meta property="og:title" content="JobFromHome.in — Launching Soon">
-<meta property="og:description" content="Find remote work or hire remote talent. India's new work-from-home platform.">
-<meta property="og:locale" content="en_IN">
-<link rel="canonical" href="https://jobfromhome.in/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
-<style>
-/* ─── RESET ─────────────────────────────── */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-img{display:block}
-button{font-family:inherit;cursor:pointer}
-input{font-family:inherit}
-
-/* ─── TOKENS ─────────────────────────────── */
-:root {
-  --ink:       #0F0F0E;
-  --ink-2:     #3A3A38;
-  --ink-3:     #6B6B67;
-  --paper:     #FAFAF7;
-  --surface:   #FFFFFF;
-  --border:    #E4E0D6;
-  --border-s:  #C8C3B8;
-
-  --yellow:    #F5A623;
-  --yellow-dk: #D4881A;
-  --yellow-bg: #FFF8E8;
-  --yellow-bd: #F0D990;
-
-  --green:     #15803D;
-  --green-lt:  #F0FAF4;
-  --green-bd:  #A7F3C8;
-
-  --blue:      #1D4ED8;
-  --blue-lt:   #EFF6FF;
-  --blue-bd:   #BFDBFE;
-
-  --radius:    12px;
-}
-
-/* ─── BASE ─────────────────────────────── */
-body {
-  font-family: 'Inter', system-ui, sans-serif;
-  background: var(--paper);
-  color: var(--ink);
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ─── HEADER ─────────────────────────────── */
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 40px;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface);
-  position: sticky;
-  top: 0;
-  z-index: 200;
-}
-
-.logo {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  text-decoration: none;
-}
-.logo-accent { color: var(--yellow); }
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.live-pill {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--ink-2);
-  background: var(--paper);
-  border: 1px solid var(--border-s);
-  border-radius: 100px;
-  padding: 6px 14px;
-  letter-spacing: 0.01em;
-}
-
-.live-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #EF4444;
-  animation: pulse 1.4s ease infinite;
-}
-@keyframes pulse {
-  0%,100% { opacity: 1; }
-  50%      { opacity: 0.35; }
-}
-
-.header-count {
-  font-size: 12px;
-  color: var(--ink-3);
-}
-.header-count strong {
-  color: var(--green);
-  font-weight: 700;
-}
-
-/* ─── HERO ─────────────────────────────── */
-.hero {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 72px 24px 52px;
-  text-align: center;
-}
-
-.eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--yellow-dk);
-  background: var(--yellow-bg);
-  border: 1px solid var(--yellow-bd);
-  border-radius: 100px;
-  padding: 5px 14px;
-  margin-bottom: 28px;
-}
-
-h1 {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(38px, 6.5vw, 72px);
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 1.0;
-  color: var(--ink);
-  margin-bottom: 20px;
-}
-h1 .hl { color: var(--yellow); }
-
-.hero-sub {
-  font-size: clamp(15px, 1.8vw, 17px);
-  color: var(--ink-3);
-  line-height: 1.65;
-  max-width: 500px;
-  margin: 0 auto 28px;
-}
-
-.early-note {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--ink-2);
-  background: var(--yellow-bg);
-  border: 1px solid var(--yellow-bd);
-  border-radius: 9px;
-  padding: 10px 18px;
-}
-.early-note strong { color: var(--yellow-dk); font-weight: 700; }
-
-/* ─── SPLIT SECTION ─────────────────────────────── */
-.split-wrap {
-  max-width: 980px;
-  margin: 0 auto 80px;
-  padding: 0 24px;
-  display: grid;
-  grid-template-columns: 1fr 52px 1fr;
-  align-items: stretch;
-  gap: 0;
-}
-
-/* Panel */
-.panel {
-  border-radius: var(--radius);
-  padding: 40px 36px;
-  border: 2px solid transparent;
-  transition: box-shadow 0.2s;
-}
-.panel:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.07); }
-
-.panel-seeker   { background: var(--green-lt); border-color: var(--green-bd); }
-.panel-recruiter{ background: var(--blue-lt);  border-color: var(--blue-bd);  }
-
-.panel-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  border-radius: 6px;
-  padding: 4px 10px;
-  margin-bottom: 18px;
-}
-.seeker-tag   { background: #DCFCE7; color: var(--green); }
-.recruiter-tag{ background: #DBEAFE; color: var(--blue);  }
-
-.panel-heading {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(22px, 2.8vw, 30px);
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.12;
-  color: var(--ink);
-  margin-bottom: 12px;
-}
-
-.panel-body {
-  font-size: 14px;
-  color: var(--ink-2);
-  line-height: 1.65;
-  margin-bottom: 24px;
-}
-
-/* Perks */
-.perks {
-  list-style: none;
-  margin-bottom: 30px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.perks li {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  font-size: 13.5px;
-  color: var(--ink-2);
-  line-height: 1.4;
-}
-.tick {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 700;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-.tick-g { background: #DCFCE7; color: var(--green); }
-.tick-b { background: #DBEAFE; color: var(--blue);  }
-
-/* Form */
-.panel-form {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-}
-
-.f-input {
-  width: 100%;
-  padding: 12px 14px;
-  border: 1.5px solid var(--border-s);
-  border-radius: 9px;
-  background: var(--surface);
-  font-size: 14px;
-  color: var(--ink);
-  outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
-}
-.f-input::placeholder { color: var(--ink-3); }
-.f-input:focus {
-  border-color: var(--yellow);
-  box-shadow: 0 0 0 3px rgba(245,166,35,0.15);
-}
-.f-input.err { border-color: #EF4444; }
-
-.panel-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 13px 20px;
-  border-radius: 10px;
-  border: none;
-  font-size: 14px;
-  font-weight: 700;
-  transition: all 0.15s;
-  margin-top: 2px;
-}
-.btn-seeker   { background: var(--green); color: #fff; }
-.btn-recruiter{ background: var(--blue);  color: #fff; }
-
-.btn-seeker:hover:not(:disabled)   { background: #166534; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(21,128,61,0.32); }
-.btn-recruiter:hover:not(:disabled){ background: #1E40AF; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(29,78,216,0.32); }
-.panel-btn:disabled { opacity: 0.7; cursor: not-allowed; }
-
-.f-note {
-  font-size: 11px;
-  color: var(--ink-3);
-  text-align: center;
-}
-
-/* Success */
-.panel-success {
-  display: none;
-  padding: 12px 0;
-  text-align: center;
-}
-.success-emoji { font-size: 52px; margin-bottom: 16px; }
-.success-h {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin-bottom: 10px;
-}
-.success-p {
-  font-size: 13px;
-  color: var(--ink-2);
-  line-height: 1.65;
-  margin-bottom: 20px;
-}
-.success-p strong { color: var(--ink); }
-
-/* Divider */
-.or-divider {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-}
-.or-line {
-  width: 1px;
-  background: var(--border);
-  flex: 1;
-}
-.or-badge {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: var(--yellow);
-  color: var(--ink);
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin: 12px 0;
-  box-shadow: 0 2px 8px rgba(245,166,35,0.4);
-}
-
-/* ─── OFFER BAR ─────────────────────────────── */
-.offer-bar {
-  max-width: 980px;
-  margin: 0 auto 80px;
-  padding: 0 24px;
-}
-.offer-inner {
-  background: var(--yellow);
-  border-radius: var(--radius);
-  padding: 26px 36px;
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  flex-wrap: wrap;
-}
-.offer-icon { font-size: 40px; line-height: 1; flex-shrink: 0; }
-.offer-text { flex: 1; min-width: 220px; }
-.offer-title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 19px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  margin-bottom: 4px;
-}
-.offer-desc {
-  font-size: 13.5px;
-  color: rgba(15,15,14,0.72);
-  line-height: 1.5;
-}
-.offer-price {
-  font-family: 'Space Grotesk', sans-serif;
-  text-align: right;
-  color: var(--ink);
-  flex-shrink: 0;
-}
-.offer-price .big {
-  font-size: 38px;
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  display: block;
-  line-height: 1;
-}
-.offer-price .small {
-  font-size: 13px;
-  color: rgba(15,15,14,0.6);
-  margin-top: 3px;
-}
-
-/* ─── FEATURES ─────────────────────────────── */
-.features-wrap {
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  background: var(--surface);
-  padding: 52px 24px;
-  margin-bottom: 80px;
-}
-.features-grid {
-  max-width: 900px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(4,1fr);
-  gap: 40px;
-}
-.feat {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.feat-label {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-.feat-val {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  color: var(--ink);
-}
-.feat-desc {
-  font-size: 12.5px;
-  color: var(--ink-3);
-  line-height: 1.55;
-}
-
-/* ─── COUNTDOWN ─────────────────────────────── */
-.countdown-wrap {
-  text-align: center;
-  padding: 0 24px 80px;
-}
-.section-eyebrow {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  margin-bottom: 24px;
-}
-.countdown {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
-.cd-unit {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 20px 24px;
-  min-width: 84px;
-}
-.cd-num {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 38px;
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  color: var(--ink);
-  font-variant-numeric: tabular-nums;
-  display: block;
-}
-.cd-lbl {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-  margin-top: 4px;
-}
-
-/* ─── SHARE ─────────────────────────────── */
-.share-wrap {
-  max-width: 520px;
-  margin: 0 auto 80px;
-  padding: 0 24px;
-}
-.share-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 36px;
-  text-align: center;
-}
-.share-h {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  margin-bottom: 10px;
-}
-.share-p {
-  font-size: 14px;
-  color: var(--ink-2);
-  line-height: 1.6;
-  margin-bottom: 24px;
-}
-.share-url {
-  font-family: 'Space Grotesk', monospace;
-  font-size: 13px;
-  color: var(--blue);
-  background: var(--blue-lt);
-  border: 1px solid var(--blue-bd);
-  border-radius: 7px;
-  padding: 9px 14px;
-  margin-bottom: 16px;
-  word-break: break-all;
-  font-weight: 600;
-}
-.wa-btn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 14px;
-  border-radius: 10px;
-  border: none;
-  background: #25D366;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.15s;
-  margin-bottom: 8px;
-}
-.wa-btn:hover { background: #1DAA55; transform: translateY(-1px); }
-.copy-btn {
-  width: 100%;
-  padding: 11px;
-  border-radius: 10px;
-  border: 1.5px solid var(--border-s);
-  background: transparent;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink-2);
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.copy-btn:hover { border-color: var(--ink); color: var(--ink); }
-
-/* ─── FOOTER ─────────────────────────────── */
-footer {
-  border-top: 1px solid var(--border);
-  padding: 28px 24px;
-  text-align: center;
-  font-size: 12px;
-  color: var(--ink-3);
-  line-height: 1.7;
-}
-footer a { color: var(--ink-3); text-decoration: underline; text-underline-offset: 2px; }
-footer a:hover { color: var(--ink); }
-
-/* ─── MOBILE ─────────────────────────────── */
-@media (max-width: 680px) {
-  header { padding: 16px 20px; }
-  .header-count { display: none; }
-
-  .hero { padding: 48px 20px 36px; }
-
-  .split-wrap {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
-    gap: 0;
-  }
-  .panel {
-    border-radius: 0;
-    padding: 32px 22px;
-  }
-  .panel-seeker {
-    border-top: 2px solid var(--green-bd);
-    border-left: none;
-    border-right: none;
-    border-bottom: none;
-    border-radius: var(--radius) var(--radius) 0 0;
-  }
-  .panel-recruiter {
-    border-bottom: 2px solid var(--blue-bd);
-    border-left: none;
-    border-right: none;
-    border-top: none;
-    border-radius: 0 0 var(--radius) var(--radius);
-  }
-  .or-divider {
-    flex-direction: row;
-    padding: 0;
-  }
-  .or-line { width: auto; height: 1px; flex: 1; }
-
-  .offer-inner { flex-direction: column; padding: 24px 22px; gap: 16px; }
-  .offer-price { text-align: left; }
-
-  .features-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
-  .countdown { gap: 7px; }
-  .cd-unit { padding: 14px 16px; min-width: 68px; }
-  .cd-num { font-size: 28px; }
-
-  .share-card { padding: 28px 22px; }
-}
-
-@media (max-width: 420px) {
-  h1 { font-size: 34px; letter-spacing: -0.025em; }
-  .features-grid { grid-template-columns: 1fr; }
-}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Find legitimate work-from-home opportunities and hire remote talent on JobFromHome.in." />
+  <title>JobFromHome.in — Remote work, verified employers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="JobFromHome.in home"><span class="brand-mark">J</span> JobFrom<span>Home</span><small>.in</small></a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#jobs">Browse jobs</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#pricing">Pricing</a>
+    </nav>
+    <button class="button button-dark header-cta" type="button" data-open="seeker">Create profile</button>
+  </header>
 
-<!-- ── HEADER ── -->
-<header>
-  <a href="/" class="logo">JobFrom<span class="logo-accent">Home</span>.in</a>
-  <div class="header-right">
-    <span class="header-count">🇮🇳 <strong id="hdrCount">47</strong> registered so far</span>
-    <div class="live-pill">
-      <span class="live-dot"></span>
-      Early access open
-    </div>
-  </div>
-</header>
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="pulse"></span> Built for genuine remote work in India</p>
+        <h1>Work that fits your life. <em>Talent that fits your team.</em></h1>
+        <p class="hero-text">Discover active work-from-home opportunities, create a professional profile, and apply directly. Employers can post genuine remote roles and manage applicants in one focused workspace.</p>
+        <div class="hero-actions">
+          <button class="button button-primary" type="button" data-open="seeker">Find remote work <span>→</span></button>
+          <button class="button button-secondary" type="button" data-open="employer">Post a job <span>→</span></button>
+        </div>
+        <p class="hero-note">No job or interview is guaranteed. Never pay an employer for a job opportunity.</p>
+      </div>
+      <aside class="hero-card" aria-label="Job discovery preview">
+        <div class="card-top"><span class="mini-logo">J</span><span>Recommended for you</span><span class="verified">● Verified</span></div>
+        <article class="job-preview">
+          <div class="company-icon purple">A</div>
+          <div><p class="job-title">Customer Support Associate</p><p class="job-meta">Remote · Full-time · India</p></div>
+          <span class="job-save">♡</span>
+        </article>
+        <article class="job-preview">
+          <div class="company-icon orange">M</div>
+          <div><p class="job-title">Social Media Executive</p><p class="job-meta">Remote · Contract · India</p></div>
+          <span class="job-save">♡</span>
+        </article>
+        <article class="job-preview">
+          <div class="company-icon green">C</div>
+          <div><p class="job-title">Inside Sales Representative</p><p class="job-meta">Remote · Full-time · India</p></div>
+          <span class="job-save">♡</span>
+        </article>
+        <p class="preview-disclaimer">Illustrative preview only. Live job availability depends on approved employer listings.</p>
+      </aside>
+    </section>
 
-<!-- ── HERO ── -->
-<section class="hero">
-  <div class="eyebrow">🚀 Launching September 2026</div>
-  <h1>India's platform for<br>remote work — <span class="hl">both<br>sides of the table.</span></h1>
-  <p class="hero-sub">Job seekers find verified work-from-home roles. Employers find reliable remote talent. One platform, built for India.</p>
-  <div class="early-note">🎁 First 500 signups — <strong>2 months free</strong> instead of the usual 1. No card needed.</div>
-</section>
+    <section class="trust-strip" aria-label="Platform commitments">
+      <div><strong>Employer review</strong><span>Listings are reviewed before publishing</span></div>
+      <div><strong>Direct applications</strong><span>Your application goes to the listed employer</span></div>
+      <div><strong>Privacy controls</strong><span>You decide profile visibility</span></div>
+      <div><strong>Report concerns</strong><span>Help us address suspicious listings</span></div>
+    </section>
 
-<!-- ── SPLIT PANEL ── -->
-<div class="split-wrap">
+    <section id="jobs" class="section jobs-section">
+      <div class="section-heading">
+        <div><p class="eyebrow">Explore opportunities</p><h2>Find work from home roles</h2></div>
+        <p>These are sample cards to show the platform experience. Publish only employer-authorised, approved roles as live listings.</p>
+      </div>
+      <div class="filter-row" aria-label="Sample filters">
+        <button class="filter active" type="button">All roles</button><button class="filter" type="button">Customer support</button><button class="filter" type="button">Sales</button><button class="filter" type="button">Design</button><button class="filter" type="button">Marketing</button>
+      </div>
+      <div class="job-grid">
+        <article class="job-card demo-card">
+          <div class="sample-label">SAMPLE LISTING</div>
+          <div class="job-card-head"><div class="company-icon purple">A</div><button class="icon-button" aria-label="Save sample job">♡</button></div>
+          <h3>Customer Support Associate</h3><p class="company-name">Example Services Pvt. Ltd.</p><div class="tags"><span>Remote</span><span>0–2 years</span><span>Full-time</span></div><p class="salary">₹2.4L – ₹3.6L per year</p>
+          <div class="job-card-foot"><span>Illustrative only</span><button class="text-button" type="button" data-open="seeker">Create profile →</button></div>
+        </article>
+        <article class="job-card demo-card">
+          <div class="sample-label">SAMPLE LISTING</div>
+          <div class="job-card-head"><div class="company-icon orange">M</div><button class="icon-button" aria-label="Save sample job">♡</button></div>
+          <h3>Social Media Executive</h3><p class="company-name">Example Creative Studio</p><div class="tags"><span>Remote</span><span>1–3 years</span><span>Contract</span></div><p class="salary">₹20,000 – ₹35,000 per month</p>
+          <div class="job-card-foot"><span>Illustrative only</span><button class="text-button" type="button" data-open="seeker">Create profile →</button></div>
+        </article>
+        <article class="job-card demo-card">
+          <div class="sample-label">SAMPLE LISTING</div>
+          <div class="job-card-head"><div class="company-icon green">C</div><button class="icon-button" aria-label="Save sample job">♡</button></div>
+          <h3>Inside Sales Representative</h3><p class="company-name">Example Growth Company</p><div class="tags"><span>Remote</span><span>1–4 years</span><span>Full-time</span></div><p class="salary">₹3L – ₹5L per year</p>
+          <div class="job-card-foot"><span>Illustrative only</span><button class="text-button" type="button" data-open="seeker">Create profile →</button></div>
+        </article>
+      </div>
+      <div class="empty-state"><span>✦</span><div><strong>New verified roles are added after review.</strong><p>Create a profile now and use the dashboard when live jobs are available.</p></div><button class="button button-dark" type="button" data-open="seeker">Create profile</button></div>
+    </section>
 
-  <!-- LEFT: Seeker -->
-  <div class="panel panel-seeker">
-    <div class="panel-tag seeker-tag">👋 Looking for work</div>
-    <h2 class="panel-heading">Find remote work<br>that fits your life</h2>
-    <p class="panel-body">Browse verified work-from-home jobs and freelance gigs — apply directly, no gatekeepers.</p>
+    <section id="how-it-works" class="section how-section">
+      <div class="section-heading centered"><p class="eyebrow">A clearer process</p><h2>Built around genuine hiring</h2><p>JobFromHome.in helps people discover, apply for, and manage remote opportunities. Employers make the selection decision.</p></div>
+      <div class="steps">
+        <article><span>01</span><h3>Create your profile</h3><p>Add skills, work history, work preferences, portfolio links, and a resume. Choose whether recruiters can discover your profile.</p></article>
+        <article><span>02</span><h3>Apply to active jobs</h3><p>Review the employer, requirements, and compensation details before submitting an application to a genuine published role.</p></article>
+        <article><span>03</span><h3>Track your progress</h3><p>See submitted, viewed, shortlisted, interview requested, rejected, or closed updates when employers update your application.</p></article>
+        <article><span>04</span><h3>Hire with confidence</h3><p>Employers publish genuine openings, review relevant applicants, and manage their candidate pipeline from one dashboard.</p></article>
+      </div>
+    </section>
 
-    <ul class="perks">
-      <li><span class="tick tick-g">✓</span> All listings manually verified — no fake posts</li>
-      <li><span class="tick tick-g">✓</span> Apply directly to employers, zero middlemen</li>
-      <li><span class="tick tick-g">✓</span> WhatsApp alerts the moment a job matches you</li>
-      <li><span class="tick tick-g">✓</span> Free to use for your first 2 months (early signup)</li>
-    </ul>
+    <section id="pricing" class="section pricing-section">
+      <div class="section-heading centered"><p class="eyebrow">Simple launch pricing</p><h2>Pay for access, not false promises</h2><p>Subscriptions give access to platform features. They do not guarantee an interview, selection, or employment.</p></div>
+      <div class="pricing-grid">
+        <article class="price-card">
+          <p class="plan-label">FOR JOB SEEKERS</p><h3>Apply plan</h3><p class="plan-intro">For professionals applying to active remote job listings.</p><p class="price"><sup>₹</sup>199 <small>/ 30 days</small></p><p class="tax-note">Price shown is inclusive of applicable GST.</p>
+          <ul><li>Apply to active platform jobs for 30 days</li><li>Professional seeker profile</li><li>Application status tracking</li><li>Resume and portfolio links</li><li>Candidate privacy controls</li></ul>
+          <button class="button button-dark full" type="button" data-open="seeker">Create seeker profile</button>
+        </article>
+        <article class="price-card featured">
+          <p class="popular">FOR EMPLOYERS</p><h3>Employer starter</h3><p class="plan-intro">For genuine organisations hiring remote talent.</p><p class="price"><sup>₹</sup>590 <small>total</small></p><p class="tax-note">₹500 + 18% GST (₹90). One live job for 30 days.</p>
+          <ul><li>One active job listing for 30 days</li><li>Employer profile and job dashboard</li><li>Applicant review workflow</li><li>Candidate status updates</li><li>GST invoice after confirmed payment</li></ul>
+          <button class="button button-primary full" type="button" data-open="employer">Create employer account</button>
+        </article>
+      </div>
+    </section>
 
-    <div class="panel-form" id="seekerForm">
-      <input class="f-input" id="s-name"  placeholder="Your full name"          autocomplete="name">
-      <input class="f-input" id="s-phone" placeholder="WhatsApp number"          autocomplete="tel"   inputmode="tel">
-      <input class="f-input" id="s-email" placeholder="Email address"            autocomplete="email" inputmode="email">
-      <button class="panel-btn btn-seeker" id="seekerBtn" onclick="submit('seeker')">
-        Get early access — free →
-      </button>
-      <p class="f-note">No spam. You'll hear from us on WhatsApp when we launch.</p>
-    </div>
+    <section class="safety-section">
+      <div><p class="eyebrow">Safety first</p><h2>Never pay an employer for a job.</h2></div>
+      <div><p>JobFromHome.in does not guarantee employment. Report listings requesting money, OTPs, bank credentials, Aadhaar copies, security deposits, training charges, or equipment payments.</p><button type="button" class="text-button" data-open="report">Report a concern →</button></div>
+    </section>
+  </main>
 
-    <div class="panel-success" id="seekerSuccess">
-      <div class="success-emoji">🎉</div>
-      <div class="success-h">You're in!</div>
-      <p class="success-p">We'll WhatsApp you the moment we go live. Your <strong>2 months free</strong> is locked in by name.<br><br>Share with a friend — you both earn +3 extra days.</p>
-      <button class="panel-btn btn-seeker" style="width:100%" onclick="shareWA()">Share on WhatsApp → +3 free days</button>
-    </div>
-  </div>
+  <footer>
+    <a class="brand" href="#top"><span class="brand-mark">J</span> JobFrom<span>Home</span><small>.in</small></a>
+    <p>© 2026 JobFromHome.in. Built for legitimate remote hiring in India.</p>
+    <div><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refunds.html">Refunds</a><a href="mailto:support@jobfromhome.in">Support</a></div>
+  </footer>
 
-  <!-- DIVIDER -->
-  <div class="or-divider">
-    <div class="or-line"></div>
-    <div class="or-badge">OR</div>
-    <div class="or-line"></div>
-  </div>
-
-  <!-- RIGHT: Recruiter -->
-  <div class="panel panel-recruiter">
-    <div class="panel-tag recruiter-tag">🏢 Looking to hire</div>
-    <h2 class="panel-heading">Hire reliable remote<br>talent — no drama</h2>
-    <p class="panel-body">Post work-from-home roles and reach people who genuinely want this kind of work. No noise, no fake profiles.</p>
-
-    <ul class="perks">
-      <li><span class="tick tick-b">✓</span> Verified candidate profiles only</li>
-      <li><span class="tick tick-b">✓</span> Secure freelance payments via Razorpay escrow</li>
-      <li><span class="tick tick-b">✓</span> GST invoices · INR payments · 100% legal</li>
-      <li><span class="tick tick-b">✓</span> First job post free — ₹670/month after your trial</li>
-    </ul>
-
-    <div class="panel-form" id="recruiterForm">
-      <input class="f-input" id="r-name"  placeholder="Your name"               autocomplete="name">
-      <input class="f-input" id="r-phone" placeholder="WhatsApp number"          autocomplete="tel"   inputmode="tel">
-      <input class="f-input" id="r-email" placeholder="Work email"               autocomplete="email" inputmode="email">
-      <button class="panel-btn btn-recruiter" id="recruiterBtn" onclick="submit('recruiter')">
-        Register to hire — free trial →
-      </button>
-      <p class="f-note">We'll contact you before launch to set up your employer account.</p>
-    </div>
-
-    <div class="panel-success" id="recruiterSuccess">
-      <div class="success-emoji">👍</div>
-      <div class="success-h">Registered!</div>
-      <p class="success-p">We'll WhatsApp you before launch to set up your employer account. <strong>First job post is on us.</strong><br><br>Know a fellow employer? They'll thank you.</p>
-      <button class="panel-btn btn-recruiter" style="width:100%" onclick="shareWA()">Tell a colleague →</button>
-    </div>
-  </div>
-
-</div><!-- /split-wrap -->
-
-<!-- ── OFFER BAR ── -->
-<div class="offer-bar">
-  <div class="offer-inner">
-    <div class="offer-icon">🎁</div>
-    <div class="offer-text">
-      <div class="offer-title">Early Bird — First 500 registrations only</div>
-      <div class="offer-desc">Sign up before launch and your first 2 months are completely free. After that it's ₹670/month — cancel any time, no lock-in, no questions asked.</div>
-    </div>
-    <div class="offer-price">
-      <span class="big">₹0</span>
-      <span class="small">for 2 months</span>
-    </div>
-  </div>
-</div>
-
-<!-- ── FEATURES ── -->
-<div class="features-wrap">
-  <div class="features-grid">
-    <div class="feat">
-      <div class="feat-label">For job seekers</div>
-      <div class="feat-val">Always free to apply</div>
-      <div class="feat-desc">Browse and apply to any listing without paying a rupee. Ever.</div>
-    </div>
-    <div class="feat">
-      <div class="feat-label">For employers</div>
-      <div class="feat-val">₹670 / month</div>
-      <div class="feat-desc">Unlimited job posts after your free trial. GST invoices on every billing cycle.</div>
-    </div>
-    <div class="feat">
-      <div class="feat-label">Payments</div>
-      <div class="feat-val">Razorpay Escrow</div>
-      <div class="feat-desc">Freelance payments held safely until work is done and approved.</div>
-    </div>
-    <div class="feat">
-      <div class="feat-label">Job alerts</div>
-      <div class="feat-val">WhatsApp-first</div>
-      <div class="feat-desc">No app to download. Get notified on WhatsApp the moment something relevant appears.</div>
-    </div>
-  </div>
-</div>
-
-<!-- ── COUNTDOWN ── -->
-<div class="countdown-wrap">
-  <div class="section-eyebrow">Launching in</div>
-  <div class="countdown">
-    <div class="cd-unit"><span class="cd-num" id="cdD">--</span><div class="cd-lbl">Days</div></div>
-    <div class="cd-unit"><span class="cd-num" id="cdH">--</span><div class="cd-lbl">Hours</div></div>
-    <div class="cd-unit"><span class="cd-num" id="cdM">--</span><div class="cd-lbl">Mins</div></div>
-    <div class="cd-unit"><span class="cd-num" id="cdS">--</span><div class="cd-lbl">Secs</div></div>
-  </div>
-</div>
-
-<!-- ── SHARE ── -->
-<div class="share-wrap">
-  <div class="share-card">
-    <div class="share-h">Know someone job hunting?</div>
-    <p class="share-p">Send them this link — they get early access, and you earn +3 free days added to your trial for each person who registers.</p>
-    <div class="share-url">jobfromhome.in</div>
-    <button class="wa-btn" onclick="shareWA()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-      </svg>
-      Share on WhatsApp
-    </button>
-    <button class="copy-btn" id="copyBtn" onclick="copyLink()">Copy link</button>
-  </div>
-</div>
-
-<!-- ── FOOTER ── -->
-<footer>
-  <p>© 2026 JobFromHome.in &nbsp;·&nbsp; <a href="mailto:support@jobfromhome.in">support@jobfromhome.in</a> &nbsp;·&nbsp; <a href="/terms.html">Terms &amp; Privacy</a> &nbsp;·&nbsp; 🇮🇳 Made in India</p>
-</footer>
-
-<script>
-// ─── CONFIG
-const SCRIPT_URL  = 'https://script.google.com/macros/s/AKfycbwQ-PpxYJtLcPdFPiyWKswD-X0c6tJa6D3HAvrJJnUaf1lxPrEkoEOqmWkKq_6LRbODeg/exec';
-const LAUNCH_DATE = new Date('2026-09-15T00:00:00+05:30');
-let totalCount    = 47; // fallback if sheet fetch fails
-
-// ─── LOAD REAL COUNT FROM SHEET ON PAGE LOAD
-// Uses GET (no-cors not needed for doGet — Apps Script sets CORS headers on GET)
-(async function loadCount() {
-  try {
-    const res  = await fetch(SCRIPT_URL + '?action=getCount');
-    const data = await res.json();
-    if (data.success && typeof data.count === 'number' && data.count > 0) {
-      totalCount = data.count;
-      document.getElementById('hdrCount').textContent = totalCount;
-    }
-  } catch(e) {
-    // silently fall back to default count
-  }
-})();
-
-// ─── COUNTDOWN
-(function tick() {
-  const diff = LAUNCH_DATE - Date.now();
-  if (diff <= 0) {
-    document.querySelector('.countdown-wrap').innerHTML =
-      '<p style="font-family:\'Space Grotesk\',sans-serif;font-size:22px;font-weight:700;color:var(--green)">🚀 We\'re live — refresh this page!</p>';
-    return;
-  }
-  document.getElementById('cdD').textContent = String(Math.floor(diff/86400000)).padStart(2,'0');
-  document.getElementById('cdH').textContent = String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
-  document.getElementById('cdM').textContent = String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
-  document.getElementById('cdS').textContent = String(Math.floor((diff%60000)/1000)).padStart(2,'0');
-  setTimeout(tick, 1000);
-})();
-
-// ─── FORM SUBMIT
-async function submit(role) {
-  const p   = role === 'seeker' ? 's' : 'r';
-  const nEl = document.getElementById(p+'-name');
-  const phEl= document.getElementById(p+'-phone');
-  const emEl= document.getElementById(p+'-email');
-
-  // Clear previous errors
-  [nEl, phEl, emEl].forEach(el => el.classList.remove('err'));
-
-  let ok = true;
-  if (!nEl.value.trim())               { nEl.classList.add('err');  ok = false; }
-  if (phEl.value.trim().length < 10)   { phEl.classList.add('err'); ok = false; }
-  if (!emEl.value.trim().includes('@')){ emEl.classList.add('err'); ok = false; }
-  if (!ok) return;
-
-  const btn = document.getElementById(role + 'Btn');
-  btn.disabled    = true;
-  btn.textContent = 'Saving…';
-
-  const payload = JSON.stringify({
-    action: 'earlyAccess',
-    name:   nEl.value.trim(),
-    phone:  phEl.value.trim(),
-    email:  emEl.value.trim(),
-    role
-  });
-
-  try {
-    // ✅ mode:'no-cors' is required for POST to Google Apps Script from a browser.
-    // The response will be opaque (unreadable) but the data DOES reach the sheet.
-    await fetch(SCRIPT_URL, {
-      method:  'POST',
-      mode:    'no-cors',           // ← THE KEY FIX — without this, browser blocks the request
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body:    payload
-    });
-  } catch(e) {
-    // Network failure — still show success UI; data may have gone through
-    console.warn('Fetch error (network):', e);
-  }
-
-  // Show success panel regardless (don't penalise user for opaque response)
-  document.getElementById(role + 'Form').style.display    = 'none';
-  document.getElementById(role + 'Success').style.display = 'block';
-
-  // Optimistically tick up counter
-  totalCount++;
-  document.getElementById('hdrCount').textContent = totalCount;
-}
-
-// ─── SHARE
-function shareWA() {
-  const msg = `🚀 JobFromHome.in aa raha hai — India ka remote jobs platform!\n\n✅ Verified work-from-home jobs & freelance gigs\n🎁 Pehle 500 logon ko 2 mahine FREE!\n\n👉 jobfromhome.in`;
-  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
-}
-
-function copyLink() {
-  navigator.clipboard.writeText('https://jobfromhome.in').then(() => {
-    const b = document.getElementById('copyBtn');
-    b.textContent = '✓ Copied!';
-    setTimeout(() => b.textContent = 'Copy link', 2000);
-  });
-}
-
-// Remove error highlight on input
-document.querySelectorAll('.f-input').forEach(el => {
-  el.addEventListener('input', () => el.classList.remove('err'));
-});
-</script>
+  <dialog id="modal" class="modal">
+    <form id="platformForm" method="dialog" novalidate>
+      <button class="modal-close" type="button" aria-label="Close" data-close>×</button>
+      <div id="formContent"></div>
+    </form>
+  </dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
 </body>
 </html>
