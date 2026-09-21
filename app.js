@@ -1,12 +1,6 @@
-/*
- JobFromHome.in profile form JavaScript — fixed version
-
- IMPORTANT:
- 1. This is JavaScript only. Do NOT paste HTML into this file.
- 2. Save this file as exactly: app.js
- 3. Your HTML page must contain: <script src="app.js"></script>
- 4. Paste your Apps Script WEB APP URL ending in /exec below.
-*/
+/* JobFromHome.in complete-profile page script.
+   Save this file as app.js beside app.html.
+   Replace APPS_SCRIPT_URL with your deployed Apps Script Web App URL ending in /exec. */
 
 const CONFIG = {
   APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwQ-PpxYJtLcPdFPiyWKswD-X0c6tJa6D3HAvrJJnUaf1lxPrEkoEOqmWkKq_6LRbODeg/exec',
@@ -19,7 +13,6 @@ const saveButton = document.getElementById('saveProfileButton');
 const paymentCard = document.getElementById('paymentCard');
 
 function showMessage(text, isError) {
-  if (!message) return;
   message.textContent = text;
   message.style.color = isError ? '#b42318' : '#15803d';
   message.style.fontWeight = '600';
@@ -37,47 +30,36 @@ function validEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || ''));
 }
 
-async function parseJsonResponse(response, label) {
+async function parseJsonResponse(response) {
   const text = await response.text();
-  let data;
-
   try {
-    data = JSON.parse(text);
+    return JSON.parse(text);
   } catch (error) {
-    console.error(label + ' returned non-JSON response', {
+    console.error('Apps Script returned HTML/non-JSON:', {
       status: response.status,
       url: response.url,
       redirected: response.redirected,
-      contentType: response.headers.get('content-type'),
       responseText: text
     });
-
-    throw new Error(
-      label + ' returned HTML instead of JSON. Check Console and confirm the Apps Script URL ends in /exec.'
-    );
+    throw new Error('Profile server returned HTML instead of JSON. Confirm the Apps Script URL ends in /exec and deployment access is Anyone.');
   }
-
-  return data;
 }
 
 async function saveProfile(data) {
   if (!CONFIG.ENABLE_APPS_SCRIPT) {
-    throw new Error('Google Sheets is disabled. Set ENABLE_APPS_SCRIPT to true in app.js.');
+    throw new Error('Google Sheets saving is disabled. Set ENABLE_APPS_SCRIPT to true.');
   }
 
   if (!CONFIG.APPS_SCRIPT_URL || CONFIG.APPS_SCRIPT_URL.includes('PASTE_YOUR')) {
-    throw new Error('Add your Apps Script Web App URL ending in /exec to app.js.');
+    throw new Error('Paste your Apps Script Web App URL ending in /exec into app.js first.');
   }
 
   let response;
-
   try {
     response = await fetch(CONFIG.APPS_SCRIPT_URL, {
       method: 'POST',
       redirect: 'follow',
-      headers: {
-        'Content-Type': 'text/plain;charset=utf-8'
-      },
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({
         action: 'createLead',
         leadType: 'seeker',
@@ -85,11 +67,11 @@ async function saveProfile(data) {
       })
     });
   } catch (error) {
-    console.error('Network error when calling Apps Script:', error);
-    throw new Error('Could not reach the profile server. Check your Apps Script deployment and URL.');
+    console.error('Apps Script network error:', error);
+    throw new Error('Could not contact the profile server. Check your Apps Script Web App deployment and URL.');
   }
 
-  const result = await parseJsonResponse(response, 'Google Apps Script');
+  const result = await parseJsonResponse(response);
 
   if (!response.ok) {
     throw new Error(result.error || ('Profile server returned HTTP ' + response.status));
@@ -103,7 +85,7 @@ async function saveProfile(data) {
 }
 
 if (!form || !message || !saveButton || !paymentCard) {
-  console.error('Profile page is missing required elements. Confirm app.html contains seekerForm, profileMessage, saveProfileButton, and paymentCard.');
+  console.warn('app.js loaded on a page without the profile form. Load app.js only from app.html.');
 } else {
   form.addEventListener('submit', async function(event) {
     event.preventDefault();
@@ -149,7 +131,6 @@ if (!form || !message || !saveButton || !paymentCard) {
 
     try {
       const result = await saveProfile(data);
-
       showMessage('Profile saved successfully. Your ID is ' + (result.id || 'created') + '.', false);
       paymentCard.hidden = false;
       saveButton.textContent = 'Profile saved ✓';
