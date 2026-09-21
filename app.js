@@ -98,13 +98,50 @@
     }
     function validEmail(value) { return /^\S+@\S+\.\S+$/.test(value || ''); }
     function validPhone(value) { return /^[6-9]\d{9}$/.test(value || ''); }
-    async function saveLead(type, data) {
-      if (!CONFIG.ENABLE_APPS_SCRIPT || CONFIG.APPS_SCRIPT_URL.includes('PASTE_YOUR')) return { success: true, preview: true };
-      const response = await fetch(CONFIG.APPS_SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ action: 'createLead', leadType: type, ...data }) });
-      const result = await response.json();
-      if (!result.success) throw new Error(result.error || 'Could not save your request.');
-      return result;
-    }
+async function saveLead(type, data) {
+  if (
+    !CONFIG.ENABLE_APPS_SCRIPT ||
+    CONFIG.APPS_SCRIPT_URL.includes('PASTE_YOUR')
+  ) {
+    return { success: true, preview: true };
+  }
+
+  const response = await fetch(CONFIG.APPS_SCRIPT_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'text/plain;charset=utf-8'
+    },
+    body: JSON.stringify({
+      action: 'createLead',
+      leadType: type,
+      ...data
+    })
+  });
+
+  const responseText = await response.text();
+
+  let result;
+  try {
+    result = JSON.parse(responseText);
+  } catch (error) {
+    console.error('Apps Script returned non-JSON:', {
+      url: CONFIG.APPS_SCRIPT_URL,
+      status: response.status,
+      responseText
+    });
+
+    throw new Error(
+      `Profile server returned HTML instead of JSON (HTTP ${response.status}). ` +
+      `Check Apps Script Web App URL, deployment access, and /exec ending.`
+    );
+  }
+
+  if (!response.ok || !result.success) {
+    throw new Error(result.error || 'Could not save your profile request.');
+  }
+
+  return result;
+}
     function setMessage(id, text, error = false) { const el = document.getElementById(id); el.className = 'form-status field full ' + (error ? 'error' : 'success'); el.textContent = text; }
     function updateIdentity(data, isEmployer) { document.getElementById('sideName').textContent = data.fullName || data.contactName; document.getElementById('sideEmail').textContent = data.email || data.businessEmail; document.getElementById('avatar').textContent = (data.fullName || data.contactName || 'J').charAt(0).toUpperCase(); if (isEmployer) document.getElementById('employerStatus').textContent = 'REVIEW REQUESTED'; }
 
@@ -126,12 +163,39 @@
       finally { button.disabled = false; button.textContent = 'Submit for employer review'; }
     });
 
-    async function paymentRequest(payload) {
-      const response = await fetch(CONFIG.PAYMENT_API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-      const data = await response.json();
-      if (!response.ok || !data.success) throw new Error(data.error || 'Payment service is unavailable.');
-      return data;
-    }
+async function paymentRequest(payload) {
+  const response = await fetch(CONFIG.PAYMENT_API, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+
+  const responseText = await response.text();
+
+  let data;
+  try {
+    data = JSON.parse(responseText);
+  } catch (error) {
+    console.error('Payment API returned non-JSON:', {
+      url: CONFIG.PAYMENT_API,
+      status: response.status,
+      responseText
+    });
+
+    throw new Error(
+      `Payment server returned HTML instead of JSON (HTTP ${response.status}). ` +
+      `Check that functions/api/razorpay.js exists and Cloudflare deployment succeeded.`
+    );
+  }
+
+  if (!response.ok || !data.success) {
+    throw new Error(data.error || 'Payment service is unavailable.');
+  }
+
+  return data;
+}
 
     document.querySelectorAll('[data-pay]').forEach(button => button.addEventListener('click', async () => {
       const planCode = button.dataset.pay;
