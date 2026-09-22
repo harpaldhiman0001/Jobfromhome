@@ -3,7 +3,7 @@
    No sample candidates, fake applications, localStorage data, or visible demo labels are used. */
 
 const REMOTEINTERN_DASHBOARD_CONFIG = {
-  APPS_SCRIPT_URL: 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_EXEC_URL_HERE'
+  APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwQ-PpxYJtLcPdFPiyWKswD-X0c6tJa6D3HAvrJJnUaf1lxPrEkoEOqmWkKq_6LRbODeg/exec'
 };
 
 const riDashboardToken = sessionStorage.getItem('jfh_session_token') || '';
