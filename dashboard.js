@@ -1,185 +1,165 @@
-const dashboardParams = new URLSearchParams(window.location.search);
-let dashboardRole = dashboardParams.get('role') === 'employer' ? 'employer' : 'candidate';
-let candidateTab = 'overview';
-let employerTab = 'overview';
-let applicationFilter = 'All';
+/* RemoteIntern authenticated dashboard — real user version.
+   Replace dashboard.js with this file after configuring the Apps Script URL below.
+   No sample candidates, fake applications, localStorage data, or visible demo labels are used. */
 
-function sidebarLink(label, tab, active, role) {
-  return `<button class="side-link ${active === tab ? 'active' : ''}" data-role="${role}" data-tab="${tab}">${label}</button>`;
+const REMOTEINTERN_DASHBOARD_CONFIG = {
+  APPS_SCRIPT_URL: 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_EXEC_URL_HERE'
+};
+
+const riDashboardToken = sessionStorage.getItem('jfh_session_token') || '';
+let riDashboardData = null;
+let riDashboardRole = null;
+
+function riDashEscape(value) {
+  return String(value ?? '').replace(/[&<>'"]/g, function (character) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character];
+  });
+}
+function riDashDate(value) {
+  if (!value) return '—';
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? '—' : date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+function riDashStatusClass(status) { return 'status-' + String(status || '').toLowerCase().replace(/\s+/g, '-'); }
+function riDashEmpty(title, text) { return '<div class="empty-state"><span>⌕</span><div><strong>' + riDashEscape(title) + '</strong><p>' + riDashEscape(text) + '</p></div></div>'; }
+
+async function riDashPost(payload) {
+  const url = REMOTEINTERN_DASHBOARD_CONFIG.APPS_SCRIPT_URL;
+  if (!url || url.includes('PASTE_YOUR')) throw new Error('Set REMOTEINTERN_DASHBOARD_CONFIG.APPS_SCRIPT_URL in dashboard.js first.');
+  const response = await fetch(url, { method: 'POST', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
+  const raw = await response.text();
+  let result;
+  try { result = JSON.parse(raw); } catch (error) { throw new Error('Dashboard server returned an invalid response. Check your Apps Script /exec deployment.'); }
+  if (!response.ok || !result.success) {
+    const requestError = new Error(result.error || ('Server error: ' + response.status));
+    requestError.authExpired = result.authExpired;
+    throw requestError;
+  }
+  return result;
 }
 
-function renderSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  if (dashboardRole === 'candidate') {
-    sidebar.innerHTML = `<div class="sidebar-profile"><div class="avatar">AS</div><strong>Aarav Sharma</strong><small>Candidate · Demo account</small></div>${sidebarLink('Overview', 'overview', candidateTab, 'candidate')}${sidebarLink('My applications', 'applications', candidateTab, 'candidate')}${sidebarLink('Saved internships', 'saved', candidateTab, 'candidate')}${sidebarLink('My profile', 'profile', candidateTab, 'candidate')}<div class="sidebar-divider"></div><button class="side-link" data-switch-role="employer">Switch to employer workspace</button>`;
-  } else {
-    sidebar.innerHTML = `<div class="sidebar-profile"><div class="avatar">NE</div><strong>NexaEdge Labs</strong><small>Employer · Demo account</small></div>${sidebarLink('Overview', 'overview', employerTab, 'employer')}${sidebarLink('Post internship', 'post', employerTab, 'employer')}${sidebarLink('Applicant pipeline', 'pipeline', employerTab, 'employer')}${sidebarLink('Find candidates', 'candidates', employerTab, 'employer')}${sidebarLink('Company profile', 'company', employerTab, 'employer')}<div class="sidebar-divider"></div><button class="side-link" data-switch-role="candidate">Switch to candidate workspace</button>`;
+function riDashSidebar(role, name, companyName, active) {
+  const candidateLinks = [['overview', 'Overview'], ['applications', 'My applications'], ['saved', 'Saved internships'], ['profile', 'My profile']];
+  const employerLinks = [['overview', 'Overview'], ['post', 'Post internship'], ['pipeline', 'Applicant pipeline'], ['candidates', 'Find candidates'], ['company', 'Company profile']];
+  const links = role === 'employer' ? employerLinks : candidateLinks;
+  const initials = String(role === 'employer' ? companyName : name || 'U').split(/\s+/).map(function (word) { return word.charAt(0); }).join('').slice(0, 2).toUpperCase();
+  return '<div class="sidebar-profile"><div class="avatar">' + riDashEscape(initials) + '</div><strong>' + riDashEscape(role === 'employer' ? companyName : name) + '</strong><small>' + (role === 'employer' ? 'Employer workspace' : 'Candidate workspace') + '</small></div>' + links.map(function (link) { return '<button class="side-link ' + (active === link[0] ? 'active' : '') + '" data-ri-tab="' + link[0] + '">' + link[1] + '</button>'; }).join('');
+}
+
+function riDashStat(label, value, hint) { return '<article class="stat-card"><small>' + riDashEscape(label) + '</small><strong>' + riDashEscape(value) + '</strong><span>' + riDashEscape(hint) + '</span></article>'; }
+
+function riCandidateApplicationRow(application) {
+  return '<div class="dashboard-row"><span class="company-icon purple row-icon">' + riDashEscape(String(application.companyName || 'RI').slice(0, 2).toUpperCase()) + '</span><div class="row-info"><strong>' + riDashEscape(application.title || 'Remote Internship') + '</strong><small>' + riDashEscape(application.companyName || 'Employer') + ' · Applied ' + riDashDate(application.appliedAt) + (application.candidateVisibleNote ? '<br>' + riDashEscape(application.candidateVisibleNote) : '') + '</small></div><span class="status-chip ' + riDashStatusClass(application.status) + '">' + riDashEscape(application.status || 'Applied') + '</span></div>';
+}
+
+function riRenderCandidateOverview(data) {
+  const profile = data.profile || {};
+  const applications = Array.isArray(data.applications) ? data.applications : [];
+  const stats = data.metrics || {};
+  const percent = Number(profile.profileCompletion || 0);
+  return '<div class="dash-heading"><div><p class="eyebrow">Candidate workspace</p><h1>Welcome, ' + riDashEscape((data.user && data.user.name) || 'Candidate') + '</h1><p>Track your remote internship applications, tasks, interviews and offers.</p></div><a class="button button-primary" href="app.html">Find internships</a></div>' +
+    '<section class="kpi-grid">' + riDashStat('Applications submitted', stats.applicationsSubmitted || applications.length, 'All applications') + riDashStat('Under review', stats.underReview || 0, 'Employer reviewing') + riDashStat('Tasks & interviews', stats.pendingActions || 0, 'Action waiting') + riDashStat('Offers received', stats.offersReceived || 0, 'Decision required') + '</section>' +
+    '<section class="dashboard-grid-two"><article class="panel"><div class="panel-heading"><h2>Application tracker</h2><button class="text-button" data-ri-tab="applications">View all</button></div>' + (applications.length ? applications.slice(0, 5).map(riCandidateApplicationRow).join('') : riDashEmpty('No applications yet.', 'Find a remote internship and submit your first application.')) + '</article><article class="panel"><div class="panel-heading"><h2>Profile completion</h2><strong>' + percent + '%</strong></div><div class="progress"><b style="width:' + Math.max(0, Math.min(100, percent)) + '%"></b></div><div class="check-item"><b>✓</b>Complete your profile to improve internship matches</div><div class="check-item"><b>✓</b>Keep skills and portfolio links up to date</div></article></section>';
+}
+
+function riRenderCandidateApplications(data) {
+  const applications = Array.isArray(data.applications) ? data.applications : [];
+  return '<div class="dash-heading"><div><p class="eyebrow">Candidate workspace</p><h1>My applications</h1><p>All visible application updates appear here. Employer-private notes are never shown.</p></div></div><section class="panel">' + (applications.length ? applications.map(riCandidateApplicationRow).join('') : riDashEmpty('No applications yet.', 'Your submitted internship applications will appear here.')) + '</section>';
+}
+
+function riRenderCandidateSaved(data) {
+  const items = Array.isArray(data.savedInternships) ? data.savedInternships : [];
+  return '<div class="dash-heading"><div><p class="eyebrow">Candidate workspace</p><h1>Saved internships</h1><p>Save opportunities to review them later.</p></div><a class="button button-secondary" href="app.html">Find internships</a></div><section class="job-grid">' + (items.length ? items.map(function (item) { return '<article class="job-card"><h3>' + riDashEscape(item.title || 'Remote Internship') + '</h3><p class="company-name">' + riDashEscape(item.companyName || 'Verified employer') + '</p><p class="salary">' + riDashEscape(item.stipendText || item.stipend || 'Stipend details available') + '</p><div class="job-card-foot"><span>Apply by ' + riDashDate(item.deadline) + '</span><a class="text-button" href="app.html">View opportunity →</a></div></article>'; }).join('') : riDashEmpty('No saved internships.', 'Use the save feature while browsing internships.')) + '</section>';
+}
+
+function riRenderCandidateProfile(data) {
+  const profile = data.profile || {};
+  return '<div class="dash-heading"><div><p class="eyebrow">Candidate workspace</p><h1>My profile</h1><p>Your contact details remain private. Employers can only view your profile according to your consent settings.</p></div></div><section class="panel"><form id="riCandidateProfileForm"><div class="form-grid"><div class="field"><label>Headline</label><input name="headline" value="' + riDashEscape(profile.headline || '') + '" required /></div><div class="field"><label>City / state</label><input name="location" value="' + riDashEscape(profile.location || '') + '" required /></div><div class="field full"><label>Skills, separated by commas</label><input name="skills" value="' + riDashEscape(Array.isArray(profile.skills) ? profile.skills.join(', ') : (profile.skills || '')) + '" required /></div><div class="field"><label>Available from</label><input type="date" name="availableFrom" value="' + riDashEscape(profile.availableFrom || '') + '" /></div><div class="field"><label>Weekly availability</label><input name="hours" value="' + riDashEscape(profile.hours || '') + '" /></div><div class="field full"><label>Portfolio URL</label><input type="url" name="portfolio" value="' + riDashEscape(profile.portfolio || '') + '" /></div><label class="consent field full"><input type="checkbox" name="discoverable" ' + (profile.discoverable ? 'checked' : '') + ' /> I am open to internship opportunities from verified employers.</label></div><p id="riProfileMessage" class="form-status"></p><button class="button button-primary" type="submit">Save profile</button></form></section>';
+}
+
+function riEmployerApplicantRow(application) {
+  return '<div class="dashboard-row"><span class="avatar row-avatar">' + riDashEscape(String(application.candidateName || 'C').split(/\s+/).map(function (word) { return word.charAt(0); }).join('').slice(0, 2)) + '</span><div class="row-info"><strong>' + riDashEscape(application.candidateName || 'Candidate') + '</strong><small>' + riDashEscape(application.headline || application.title || 'Applicant') + '</small></div><span class="status-chip ' + riDashStatusClass(application.status) + '">' + riDashEscape(application.status || 'Applied') + '</span></div>';
+}
+
+function riRenderEmployerOverview(data) {
+  const metrics = data.metrics || {};
+  const applicants = Array.isArray(data.applicants) ? data.applicants : [];
+  return '<div class="dash-heading"><div><p class="eyebrow">Employer workspace</p><h1>Manage your remote internships</h1><p>Post internship requirements, review real applicants, and manage each stage securely.</p></div><button class="button button-primary" data-ri-tab="post">Post remote internship</button></div><section class="kpi-grid">' + riDashStat('Active internships', metrics.activeInternships || 0, 'Live and discoverable') + riDashStat('Total applicants', metrics.totalApplicants || applicants.length, 'Across your internships') + riDashStat('Shortlisted', metrics.shortlisted || 0, 'In progress') + riDashStat('Offers sent', metrics.offersSent || 0, 'Awaiting response') + '</section><section class="dashboard-grid-two"><article class="panel"><div class="panel-heading"><h2>Recent applicants</h2><button class="text-button" data-ri-tab="pipeline">Open pipeline</button></div>' + (applicants.length ? applicants.slice(0, 5).map(riEmployerApplicantRow).join('') : riDashEmpty('No applicants yet.', 'Applicants will appear after an approved internship receives applications.')) + '</article><article class="panel"><div class="panel-heading"><h2>Company verification</h2></div><div class="check-item"><b>✓</b>' + riDashEscape((data.company && data.company.verificationStatus) || 'Verification status pending') + '</div><div class="check-item"><b>•</b>Review candidate applications promptly</div><div class="check-item"><b>•</b>Keep all candidate communication professional and fee-free</div></article></section>';
+}
+
+function riRenderEmployerPost() {
+  return '<div class="dash-heading"><div><p class="eyebrow">Employer workspace</p><h1>Post remote internship</h1><p>Every requirement is reviewed before publication. Candidate fees, deposits, OTP requests and banking-information requests are prohibited.</p></div></div><section class="panel"><form id="riInternshipForm"><div class="form-grid"><div class="field"><label>Internship title *</label><input name="title" required /></div><div class="field"><label>Category *</label><input name="category" required /></div><div class="field"><label>Duration in months *</label><input type="number" name="durationMonths" min="1" max="24" required /></div><div class="field"><label>Application deadline *</label><input type="date" name="deadline" required /></div><div class="field"><label>Stipend type *</label><select name="stipendType" required><option value="Paid">Paid</option><option value="Unpaid">Unpaid</option><option value="Negotiable">Negotiable</option></select></div><div class="field"><label>Monthly stipend in INR</label><input type="number" name="stipend" min="0" /></div><div class="field full"><label>Required skills *</label><input name="skills" placeholder="HTML, CSS, JavaScript" required /></div><div class="field full"><label>Summary, responsibilities and learning outcomes *</label><textarea name="description" required></textarea></div><label class="consent field full"><input type="checkbox" name="remoteOnly" checked required /> This is a remote work-from-home internship only.</label><label class="consent field full"><input type="checkbox" name="safetyDeclaration" required /> I will not charge candidates fees, request deposits/training payment, request OTPs, or ask for banking information.</label></div><p id="riInternshipMessage" class="form-status"></p><button class="button button-primary" type="submit">Submit for review</button></form></section>';
+}
+
+function riRenderEmployerPipeline(data) {
+  const applicants = Array.isArray(data.applicants) ? data.applicants : [];
+  const stages = ['Applied', 'Under review', 'Shortlisted', 'Task sent', 'Interview invited', 'Offer sent'];
+  return '<div class="dash-heading"><div><p class="eyebrow">Employer workspace</p><h1>Applicant pipeline</h1><p>Only applicants to your own internships are shown. Private notes must never be exposed to candidates.</p></div></div><section class="pipeline-board">' + stages.map(function (stage) { const group = applicants.filter(function (item) { return item.status === stage; }); return '<article class="pipeline-column"><h3>' + stage + ' <small>(' + group.length + ')</small></h3>' + (group.length ? group.map(function (item) { return '<div class="candidate-card"><strong>' + riDashEscape(item.candidateName || 'Candidate') + '</strong><p>' + riDashEscape(item.headline || item.internshipTitle || '') + '</p><div class="candidate-actions"><button class="text-button" data-ri-application="' + riDashEscape(item.id) + '" data-ri-action="move">Move →</button><button class="text-button" data-ri-application="' + riDashEscape(item.id) + '" data-ri-action="note">Private note</button></div></div>'; }).join('') : '<p class="pipeline-empty">No candidates</p>') + '</article>'; }).join('') + '</section>';
+}
+
+function riRenderEmployerCandidates(data) {
+  const candidates = Array.isArray(data.candidates) ? data.candidates : [];
+  return '<div class="dash-heading"><div><p class="eyebrow">Employer workspace</p><h1>Find candidates</h1><p>Only candidates who have opted in to discoverability are shown. Contact information remains protected.</p></div></div><section class="job-grid">' + (candidates.length ? candidates.map(function (candidate) { return '<article class="job-card"><h3>' + riDashEscape(candidate.displayName || candidate.name || 'Candidate') + '</h3><p class="company-name">' + riDashEscape(candidate.location || candidate.city || '') + '</p><div class="tags">' + (candidate.skills || []).slice(0, 4).map(function (skill) { return '<span>' + riDashEscape(skill) + '</span>'; }).join('') + '</div><p class="salary">Available: ' + riDashEscape(candidate.availability || 'Not specified') + '</p><div class="job-card-foot"><span>Portfolio ' + (candidate.portfolio ? 'available' : 'not provided') + '</span><button class="text-button" data-ri-candidate="' + riDashEscape(candidate.id) + '">Invite to apply →</button></div></article>'; }).join('') : riDashEmpty('No matching candidates.', 'Candidates will appear here after they create profiles and choose to be discoverable.')) + '</section>';
+}
+
+function riRenderEmployerCompany(data) {
+  const company = data.company || {};
+  return '<div class="dash-heading"><div><p class="eyebrow">Employer workspace</p><h1>Company profile</h1><p>Update company details. Verification status can only be changed by platform administrators.</p></div></div><section class="panel"><form id="riCompanyForm"><div class="form-grid"><div class="field"><label>Company name</label><input name="companyName" value="' + riDashEscape(company.name || company.companyName || '') + '" required /></div><div class="field"><label>Industry</label><input name="industry" value="' + riDashEscape(company.industry || '') + '" required /></div><div class="field"><label>Website</label><input type="url" name="website" value="' + riDashEscape(company.website || '') + '" /></div><div class="field full"><label>About company</label><textarea name="about">' + riDashEscape(company.about || '') + '</textarea></div></div><div class="report-box">Verification status: <strong>' + riDashEscape(company.verificationStatus || 'Pending') + '</strong></div><p id="riCompanyMessage" class="form-status"></p><button class="button button-primary" type="submit">Save company profile</button></form></section>';
+}
+
+async function riDashLoad(role) {
+  if (!riDashboardToken) { window.location.href = 'login.html'; return; }
+  try {
+    const result = await riDashPost({ action: role === 'employer' ? 'getEmployerDashboard' : 'getCandidateDashboard', token: riDashboardToken });
+    riDashboardData = result;
+    riDashboardRole = result.role || role;
+    riDashRender('overview');
+  } catch (error) {
+    if (error.authExpired) { sessionStorage.removeItem('jfh_session_token'); window.location.href = 'login.html'; return; }
+    document.getElementById('dashboard').innerHTML = riDashEmpty('Dashboard could not be loaded.', error.message);
   }
 }
 
-function statCard(label, value, hint) { return `<article class="stat-card"><small>${escapeHtml(label)}</small><strong>${escapeHtml(value)}</strong><span>${escapeHtml(hint)}</span></article>`; }
-function candidateAvatar(name) { return `<span class="avatar row-avatar">${escapeHtml(name.split(' ').map(x => x[0]).join(''))}</span>`; }
-function checkItem(label, complete) { return `<div class="check-item"><b>${complete ? '✓' : '○'}</b>${escapeHtml(label)}</div>`; }
-function empty(title, text) { return `<div class="empty-state"><span>⌕</span><div><strong>${escapeHtml(title)}</strong><p>${escapeHtml(text)}</p></div></div>`; }
-
-function applicationRow(app, state) {
-  const internship = getInternship(state, app.internshipId) || { title: 'Internship', company: 'Employer', logo: 'RI', color: 'purple' };
-  return `<div class="dashboard-row"><span class="company-icon ${escapeHtml(internship.color)} row-icon">${escapeHtml(internship.logo)}</span><div class="row-info"><strong>${escapeHtml(internship.title)}</strong><small>${escapeHtml(internship.company)} · Applied ${dateText(app.appliedAt)}<br>${escapeHtml(app.note)}</small></div><span class="status-chip ${statusClass(app.status)}">${escapeHtml(app.status)}</span></div>`;
+function riDashRender(tab) {
+  if (!riDashboardData) return;
+  const role = riDashboardRole === 'employer' ? 'employer' : 'candidate';
+  const name = riDashboardData.user && riDashboardData.user.name;
+  const companyName = riDashboardData.company && (riDashboardData.company.name || riDashboardData.company.companyName);
+  document.getElementById('sidebar').innerHTML = riDashSidebar(role, name, companyName, tab);
+  const views = role === 'employer' ? { overview: riRenderEmployerOverview, post: riRenderEmployerPost, pipeline: riRenderEmployerPipeline, candidates: riRenderEmployerCandidates, company: riRenderEmployerCompany } : { overview: riRenderCandidateOverview, applications: riRenderCandidateApplications, saved: riRenderCandidateSaved, profile: riRenderCandidateProfile };
+  document.getElementById('dashboard').innerHTML = views[tab](riDashboardData);
+  riDashAttachForms();
 }
 
-function candidateOverview(state) {
-  const apps = state.applications;
-  const taskOrInterview = apps.filter(a => /Task|Interview/.test(a.status)).length;
-  const profileFields = [state.candidate.headline, state.candidate.location, state.candidate.skills.length, state.candidate.portfolio, state.candidate.discoverable];
-  const complete = Math.round(profileFields.filter(Boolean).length / profileFields.length * 100);
-  return `<div class="dash-heading"><div><p class="eyebrow">Candidate workspace</p><h1>Good afternoon, ${escapeHtml(state.candidate.name.split(' ')[0])}</h1><p>You have ${taskOrInterview || 'no'} task or interview action${taskOrInterview === 1 ? '' : 's'} waiting.</p></div><a class="button button-primary" href="app.html">Find internships</a></div><section class="kpi-grid">${statCard('Applications submitted', apps.length, 'All applications')}${statCard('Under review', apps.filter(a => a.status === 'Under review').length, 'Employer reviewing')}${statCard('Tasks & interviews', taskOrInterview, 'Action waiting')}${statCard('Offers received', apps.filter(a => a.status === 'Offer sent').length, 'Decision required')}</section><section class="dashboard-grid-two"><article class="panel"><div class="panel-heading"><h2>Application tracker</h2><button class="text-button" data-role="candidate" data-tab="applications">View all</button></div>${apps.slice(0, 5).map(app => applicationRow(app, state)).join('') || empty('No applications yet.', 'Find a remote internship and submit your first application.')}</article><article class="panel"><div class="panel-heading"><h2>Profile completion</h2><strong>${complete}%</strong></div><div class="progress"><b style="width:${complete}%"></b></div>${checkItem('Professional headline', !!state.candidate.headline)}${checkItem('Location and availability', !!state.candidate.location && !!state.candidate.availableFrom)}${checkItem('Skills added', state.candidate.skills.length > 0)}${checkItem('Portfolio link', !!state.candidate.portfolio)}${checkItem('Open to internship opportunities', !!state.candidate.discoverable)}</article></section><section class="panel dashboard-bottom-panel"><div class="panel-heading"><h2>Recommended internships</h2><a class="text-button" href="app.html">Explore all</a></div><div class="job-grid compact-grid">${getAllInternships(state).slice(0, 3).map(i => internshipCard(i, state)).join('')}</div></section>`;
+function riDashAttachForms() {
+  const profile = document.getElementById('riCandidateProfileForm');
+  if (profile) profile.addEventListener('submit', async function (event) { event.preventDefault(); const data = new FormData(profile); const message = document.getElementById('riProfileMessage'); try { await riDashPost({ action: 'updateCandidateProfile', token: riDashboardToken, headline: data.get('headline'), location: data.get('location'), skills: String(data.get('skills')).split(',').map(function (item) { return item.trim(); }).filter(Boolean), availableFrom: data.get('availableFrom'), hours: data.get('hours'), portfolio: data.get('portfolio'), discoverable: data.get('discoverable') === 'on' }); message.className = 'form-status success'; message.textContent = 'Profile saved successfully.'; await riDashLoad('candidate'); } catch (error) { message.className = 'form-status error'; message.textContent = error.message; } });
+  const internship = document.getElementById('riInternshipForm');
+  if (internship) internship.addEventListener('submit', async function (event) { event.preventDefault(); const data = new FormData(internship); const message = document.getElementById('riInternshipMessage'); try { await riDashPost({ action: 'createInternshipRequest', token: riDashboardToken, title: data.get('title'), category: data.get('category'), durationMonths: Number(data.get('durationMonths')), deadline: data.get('deadline'), stipendType: data.get('stipendType'), stipend: Number(data.get('stipend') || 0), skills: String(data.get('skills')).split(',').map(function (item) { return item.trim(); }).filter(Boolean), description: data.get('description'), remoteOnly: data.get('remoteOnly') === 'on', safetyDeclaration: data.get('safetyDeclaration') === 'on' }); message.className = 'form-status success'; message.textContent = 'Internship submitted for review.'; internship.reset(); } catch (error) { message.className = 'form-status error'; message.textContent = error.message; } });
+  const company = document.getElementById('riCompanyForm');
+  if (company) company.addEventListener('submit', async function (event) { event.preventDefault(); const data = new FormData(company); const message = document.getElementById('riCompanyMessage'); try { await riDashPost({ action: 'updateEmployerProfile', token: riDashboardToken, companyName: data.get('companyName'), industry: data.get('industry'), website: data.get('website'), about: data.get('about') }); message.className = 'form-status success'; message.textContent = 'Company profile saved successfully.'; } catch (error) { message.className = 'form-status error'; message.textContent = error.message; } });
 }
 
-function candidateApplications(state) {
-  const statuses = ['All', 'Applied', 'Under review', 'Shortlisted', 'Task sent', 'Interview invited', 'Offer sent', 'Rejected', 'Withdrawn'];
-  const rows = state.applications.filter(a => applicationFilter === 'All' || a.status === applicationFilter);
-  return `<div class="dash-heading"><div><p class="eyebrow">Candidate workspace</p><h1>My applications</h1><p>Employer-private notes are never visible here.</p></div></div><section class="panel"><div class="filter-row">${statuses.map(status => `<button class="filter ${applicationFilter === status ? 'active' : ''}" data-application-filter="${status}">${status}</button>`).join('')}</div>${rows.length ? rows.map(app => applicationRow(app, state)).join('') : empty('No applications in this status.', 'Try another status filter or explore internships.')}</section>`;
-}
-
-function candidateSaved(state) {
-  const saved = getAllInternships(state).filter(i => state.savedInternshipIds.includes(i.id));
-  return `<div class="dash-heading"><div><p class="eyebrow">Candidate workspace</p><h1>Saved internships</h1><p>Keep opportunities here until you are ready to apply.</p></div><a class="button button-secondary" href="app.html">Find more internships</a></div><section class="job-grid">${saved.length ? saved.map(i => internshipCard(i, state)).join('') : empty('No saved internships.', 'Use the star button on an internship card to save one.')}</section>`;
-}
-
-function candidateProfile(state) {
-  const c = state.candidate;
-  return `<div class="dash-heading"><div><p class="eyebrow">Candidate workspace</p><h1>My profile</h1><p>Your contact details stay private. Employers see your profile only when you opt in.</p></div></div><section class="panel"><form id="candidateProfileForm"><div class="form-grid"><div class="field"><label>Headline</label><input name="headline" value="${escapeHtml(c.headline)}" required /></div><div class="field"><label>City / state</label><input name="location" value="${escapeHtml(c.location)}" required /></div><div class="field full"><label>Skills, separated by commas</label><input name="skills" value="${escapeHtml(c.skills.join(', '))}" required /></div><div class="field"><label>Available from</label><input type="date" name="availableFrom" value="${escapeHtml(c.availableFrom)}" required /></div><div class="field"><label>Weekly availability</label><select name="hours"><option ${c.hours === '10 hours' ? 'selected' : ''}>10 hours</option><option ${c.hours === '20 hours' ? 'selected' : ''}>20 hours</option><option ${c.hours === '30 hours' ? 'selected' : ''}>30 hours</option><option ${c.hours === '40 hours' ? 'selected' : ''}>40 hours</option></select></div><div class="field full"><label>Portfolio URL</label><input type="url" name="portfolio" value="${escapeHtml(c.portfolio)}" /></div><label class="consent field full"><input type="checkbox" name="discoverable" ${c.discoverable ? 'checked' : ''} /> I am open to internship opportunities and allow verified employers to see my profile summary.</label></div><p id="candidateProfileMessage" class="form-status"></p><button class="button button-primary" type="submit">Save candidate profile</button></form></section>`;
-}
-
-function employerOverview(state) {
-  const active = state.employerInternships.filter(i => i.status === 'Active').length;
-  const applicants = state.employerApplications.length;
-  const shortlisted = state.employerApplications.filter(a => ['Shortlisted', 'Task sent', 'Interview invited', 'Offer sent'].includes(a.status)).length;
-  const offers = state.employerApplications.filter(a => a.status === 'Offer sent').length;
-  return `<div class="dash-heading"><div><p class="eyebrow">Employer workspace</p><h1>Manage your remote internships</h1><p>Review candidates, post internship requirements and track the selection pipeline.</p></div><button class="button button-primary" data-role="employer" data-tab="post">Post remote internship</button></div><section class="kpi-grid">${statCard('Active internships', active, 'Live and discoverable')}${statCard('Total applicants', applicants, 'Across active posts')}${statCard('Shortlisted', shortlisted, 'In progress')}${statCard('Offers sent', offers, 'Awaiting response')}</section><section class="dashboard-grid-two"><article class="panel"><div class="panel-heading"><h2>Recent applicants</h2><button class="text-button" data-role="employer" data-tab="pipeline">Open pipeline</button></div>${state.employerApplications.slice(0, 5).map(app => `<div class="dashboard-row">${candidateAvatar(app.name)}<div class="row-info"><strong>${escapeHtml(app.name)}</strong><small>${escapeHtml(app.headline)}</small></div><span class="status-chip ${statusClass(app.status)}">${escapeHtml(app.status)}</span></div>`).join('')}</article><article class="panel"><div class="panel-heading"><h2>Action center</h2><span class="status-chip status-under-review">2 actions</span></div>${checkItem('Company verification approved', true)}${checkItem('Review new applicants', false)}${checkItem('Send task instructions', false)}${checkItem('Internship closes in 9 days', false)}</article></section>`;
-}
-
-function employerPost() {
-  return `<div class="dash-heading"><div><p class="eyebrow">Employer workspace</p><h1>Post remote internship</h1><p>Internships are reviewed before publication. Fees, deposits and unsafe requests are prohibited.</p></div></div><section class="panel"><form id="dashboardInternshipForm"><div class="form-grid"><div class="field"><label>Internship title *</label><input name="title" required /></div><div class="field"><label>Category *</label><select name="category" required><option value="">Select category</option><option>Web Development</option><option>Video Editing</option><option>Digital Marketing</option><option>Content Writing</option><option>UI/UX Design</option><option>Data Analysis</option><option>HR & Recruitment</option><option>Product Operations</option></select></div><div class="field"><label>Duration *</label><select name="duration" required><option value="">Select duration</option><option value="2">2 months</option><option value="3">3 months</option><option value="4">4 months</option><option value="6">6 months</option></select></div><div class="field"><label>Application deadline *</label><input type="date" name="deadline" required /></div><div class="field"><label>Stipend type *</label><select name="stipendType" required><option value="">Select type</option><option value="Paid">Paid</option><option value="Unpaid">Unpaid</option><option value="Negotiable">Negotiable</option></select></div><div class="field"><label>Monthly stipend INR</label><input type="number" name="stipend" min="0" /></div><div class="field"><label>Openings *</label><input type="number" name="openings" min="1" value="1" required /></div><div class="field"><label>Hours per week *</label><select name="hours" required><option>10</option><option selected>20</option><option>30</option><option>40</option></select></div><div class="field full"><label>Required skills *</label><input name="skills" placeholder="HTML, CSS, JavaScript" required /></div><div class="field full"><label>Summary, responsibilities and learning outcomes *</label><textarea name="summary" required></textarea></div><div class="field"><label>Certificate offered</label><select name="certificate"><option>Yes</option><option>No</option></select></div><div class="field"><label>PPO possibility</label><select name="ppo"><option>No</option><option>Yes</option></select></div><label class="consent field full"><input type="checkbox" name="remoteOnly" checked required /> This is a remote work-from-home internship only.</label><label class="consent field full"><input type="checkbox" name="safetyDeclaration" required /> I will not ask candidates for fees, deposits, paid training, OTPs or banking information.</label></div><p class="form-status" id="dashboardInternshipMessage"></p><button class="button button-secondary" type="button" id="dashboardSaveDraft">Save draft</button> <button class="button button-primary" type="submit">Submit for review</button></form></section>`;
-}
-
-function employerPipeline(state) {
-  const stages = ['Applied', 'Under review', 'Shortlisted', 'Task sent', 'Interview invited', 'Offer sent'];
-  return `<div class="dash-heading"><div><p class="eyebrow">Employer workspace</p><h1>Applicant pipeline</h1><p>Private notes are employer-only. Candidate-visible updates should be sent through the backend messaging system in production.</p></div></div><section class="pipeline-board">${stages.map(stage => `<article class="pipeline-column"><h3>${escapeHtml(stage)} <small>(${state.employerApplications.filter(a => a.status === stage).length})</small></h3>${state.employerApplications.filter(a => a.status === stage).map(app => `<div class="candidate-card"><strong>${escapeHtml(app.name)}</strong><p>${escapeHtml(app.headline)}</p><div class="tags">${app.skills.slice(0, 2).map(s => `<span>${escapeHtml(s)}</span>`).join('')}</div><div class="candidate-actions"><button class="text-button" data-move-candidate="${escapeHtml(app.id)}">Move →</button><button class="text-button" data-private-note="${escapeHtml(app.id)}">Private note</button></div></div>`).join('') || '<p class="pipeline-empty">No candidates</p>'}</article>`).join('')}</section>`;
-}
-
-function employerCandidates() {
-  const candidates = (window.DEMO_PROFILES || []).slice(0, 100);
-  return `<div class="dash-heading"><div><p class="eyebrow">Employer workspace</p><h1>Find candidates</h1><p>Only discoverable profiles are shown. Contact details remain protected unless a candidate applies or consents.</p></div></div><section class="panel"><div class="form-grid"><div class="field"><label>Search skill or category</label><input id="candidateSearchInput" placeholder="JavaScript, video editing, UI/UX" /></div><div class="field"><label>Availability</label><select id="candidateAvailabilityFilter"><option value="All">Any availability</option><option value="Immediate">Available immediately</option><option value="October">Available in October</option></select></div></div></section><section class="job-grid directory-grid" id="candidateDirectoryGrid">${candidateCards(candidates)}</section>`;
-}
-
-function candidateCards(candidates) {
-  return candidates.map(candidate => `<article class="job-card candidate-directory-card"><span class="sample-label">DEMO PROFILE</span><div class="job-card-head">${candidateAvatar(candidate.display_name)}<span class="status-chip status-shortlisted">Open to internships</span></div><h3>${escapeHtml(candidate.display_name)}</h3><p class="company-name">${escapeHtml(candidate.city)} · ${escapeHtml(candidate.category)}</p><div class="tags">${candidate.skills.map(skill => `<span>${escapeHtml(skill)}</span>`).join('')}</div><p class="salary">Available: ${escapeHtml(candidate.availability)} · Profile ${escapeHtml(candidate.profile_completion)}%</p><div class="job-card-foot"><span>Portfolio available</span><button class="text-button" data-invite-candidate="${escapeHtml(candidate.id)}">Invite to apply →</button></div></article>`).join('');
-}
-
-function employerCompany(state) {
-  const e = state.employer;
-  return `<div class="dash-heading"><div><p class="eyebrow">Employer workspace</p><h1>Company profile</h1><p>Your public company details appear on approved internship listings.</p></div></div><section class="panel"><form id="companyProfileForm"><div class="form-grid"><div class="field"><label>Company name</label><input name="companyName" value="${escapeHtml(e.companyName)}" required /></div><div class="field"><label>Industry</label><input name="industry" value="${escapeHtml(e.industry)}" required /></div><div class="field"><label>Company website</label><input name="website" type="url" value="${escapeHtml(e.website)}" /></div><div class="field"><label>Company size</label><select name="size"><option ${e.size === '1–10' ? 'selected' : ''}>1–10</option><option ${e.size === '11–50' ? 'selected' : ''}>11–50</option><option ${e.size === '51–200' ? 'selected' : ''}>51–200</option><option ${e.size === '201+' ? 'selected' : ''}>201+</option></select></div><div class="field full"><label>About company</label><textarea name="about">${escapeHtml(e.about)}</textarea></div></div><div class="report-box">Verification status: <strong>${escapeHtml(e.verificationStatus)}</strong>. In production, this status must be controlled by an admin-only backend action.</div><p class="form-status" id="companyProfileMessage"></p><button class="button button-primary" type="submit">Save company profile</button></form></section>`;
-}
-
-function renderDashboard() {
-  const state = getState();
-  renderSidebar();
-  const root = document.getElementById('dashboard');
-  if (dashboardRole === 'candidate') {
-    const screens = { overview: candidateOverview, applications: candidateApplications, saved: candidateSaved, profile: candidateProfile };
-    root.innerHTML = screens[candidateTab](state);
-  } else {
-    const screens = { overview: employerOverview, post: employerPost, pipeline: employerPipeline, candidates: employerCandidates, company: employerCompany };
-    root.innerHTML = screens[employerTab](state);
+document.addEventListener('click', async function (event) {
+  const tab = event.target.closest('[data-ri-tab]');
+  if (tab) riDashRender(tab.dataset.riTab);
+  const invite = event.target.closest('[data-ri-candidate]');
+  if (invite) { try { await riDashPost({ action: 'inviteCandidate', token: riDashboardToken, candidateId: invite.dataset.riCandidate }); alert('Invitation sent successfully.'); } catch (error) { alert(error.message); } }
+  const applicationAction = event.target.closest('[data-ri-application]');
+  if (applicationAction) {
+    const applicationId = applicationAction.dataset.riApplication;
+    if (applicationAction.dataset.riAction === 'note') {
+      const note = prompt('Private employer note:');
+      if (note !== null) { try { await riDashPost({ action: 'addPrivateEmployerNote', token: riDashboardToken, applicationId: applicationId, note: note }); alert('Private note saved.'); } catch (error) { alert(error.message); } }
+    }
+    if (applicationAction.dataset.riAction === 'move') {
+      const nextStatus = prompt('New status: Applied, Under review, Shortlisted, Task sent, Interview invited, Offer sent, Rejected');
+      if (nextStatus) { try { await riDashPost({ action: 'updateApplicationStatus', token: riDashboardToken, applicationId: applicationId, newStatus: nextStatus }); await riDashLoad('employer'); } catch (error) { alert(error.message); } }
+    }
   }
-  attachDashboardForms();
-}
-
-function attachDashboardForms() {
-  const profile = document.getElementById('candidateProfileForm');
-  if (profile) profile.addEventListener('submit', event => {
-    event.preventDefault();
-    const state = getState();
-    const data = new FormData(profile);
-    state.candidate = { ...state.candidate, headline: data.get('headline').trim(), location: data.get('location').trim(), skills: data.get('skills').split(',').map(x => x.trim()).filter(Boolean), availableFrom: data.get('availableFrom'), hours: data.get('hours'), portfolio: data.get('portfolio').trim(), discoverable: data.get('discoverable') === 'on' };
-    saveState(state);
-    document.getElementById('candidateProfileMessage').className = 'form-status success';
-    document.getElementById('candidateProfileMessage').textContent = 'Profile saved locally. Connect to your authenticated backend before production.';
-  });
-
-  const post = document.getElementById('dashboardInternshipForm');
-  if (post) post.addEventListener('submit', event => {
-    event.preventDefault();
-    const data = new FormData(post);
-    const message = document.getElementById('dashboardInternshipMessage');
-    if (new Date(`${data.get('deadline')}T23:59:59`) <= new Date()) { message.className = 'form-status error'; message.textContent = 'Application deadline must be in the future.'; return; }
-    if (data.get('stipendType') === 'Paid' && Number(data.get('stipend') || 0) <= 0) { message.className = 'form-status error'; message.textContent = 'Enter a valid monthly stipend for paid internship.'; return; }
-    const state = getState();
-    state.employerInternships.unshift({ id: `employer-i-${Date.now()}`, title: data.get('title').trim(), company: state.employer.companyName, category: data.get('category'), duration: Number(data.get('duration')), stipendType: data.get('stipendType'), stipend: data.get('stipendType') === 'Paid' ? `₹${Number(data.get('stipend')).toLocaleString('en-IN')} / month` : data.get('stipendType'), skills: data.get('skills').split(',').map(x => x.trim()).filter(Boolean), certificate: data.get('certificate') === 'Yes', ppo: data.get('ppo') === 'Yes', deadline: data.get('deadline'), description: data.get('summary').trim(), logo: state.employer.companyName.split(/\s+/).map(x => x[0]).join('').slice(0, 2).toUpperCase(), color: 'purple', status: 'Pending review', applicants: 0, views: 0, saves: 0, isDemo: false });
-    saveState(state);
-    message.className = 'form-status success';
-    message.textContent = 'Internship submitted for review. It is private until approved.';
-    post.reset();
-    showToast('Internship submitted for review.');
-  });
-
-  const draft = document.getElementById('dashboardSaveDraft');
-  if (draft) draft.addEventListener('click', () => { document.getElementById('dashboardInternshipMessage').className = 'form-status success'; document.getElementById('dashboardInternshipMessage').textContent = 'Draft saved locally in this browser.'; });
-
-  const company = document.getElementById('companyProfileForm');
-  if (company) company.addEventListener('submit', event => {
-    event.preventDefault();
-    const state = getState();
-    const data = new FormData(company);
-    state.employer = { ...state.employer, companyName: data.get('companyName').trim(), industry: data.get('industry').trim(), website: data.get('website').trim(), size: data.get('size'), about: data.get('about').trim() };
-    saveState(state);
-    document.getElementById('companyProfileMessage').className = 'form-status success';
-    document.getElementById('companyProfileMessage').textContent = 'Company profile saved locally.';
-  });
-
-  const search = document.getElementById('candidateSearchInput');
-  if (search) search.addEventListener('input', filterCandidateDirectory);
-  const availability = document.getElementById('candidateAvailabilityFilter');
-  if (availability) availability.addEventListener('change', filterCandidateDirectory);
-}
-
-function filterCandidateDirectory() {
-  const query = String(document.getElementById('candidateSearchInput').value || '').toLowerCase();
-  const availability = document.getElementById('candidateAvailabilityFilter').value;
-  const rows = (window.DEMO_PROFILES || []).filter(candidate => {
-    const source = [candidate.display_name, candidate.category, ...candidate.skills].join(' ').toLowerCase();
-    return (!query || source.includes(query)) && (availability === 'All' || candidate.availability === availability);
-  });
-  document.getElementById('candidateDirectoryGrid').innerHTML = rows.length ? candidateCards(rows) : empty('No candidates found.', 'Try a different skill or availability filter.');
-}
-
-function moveCandidate(applicationId) {
-  const stages = ['Applied', 'Under review', 'Shortlisted', 'Task sent', 'Interview invited', 'Offer sent'];
-  const state = getState();
-  const candidate = state.employerApplications.find(a => a.id === applicationId);
-  if (!candidate) return;
-  const index = stages.indexOf(candidate.status);
-  candidate.status = stages[Math.min(index + 1, stages.length - 1)];
-  saveState(state);
-  renderDashboard();
-  showToast(`${candidate.name} moved to ${candidate.status}.`);
-}
-
-document.addEventListener('click', event => {
-  const roleTab = event.target.closest('[data-role][data-tab]');
-  if (roleTab) { dashboardRole = roleTab.dataset.role; if (dashboardRole === 'candidate') candidateTab = roleTab.dataset.tab; else employerTab = roleTab.dataset.tab; renderDashboard(); }
-  const switchRole = event.target.closest('[data-switch-role]');
-  if (switchRole) { dashboardRole = switchRole.dataset.switchRole; renderDashboard(); }
-  const filter = event.target.closest('[data-application-filter]');
-  if (filter) { applicationFilter = filter.dataset.applicationFilter; renderDashboard(); }
-  const move = event.target.closest('[data-move-candidate]');
-  if (move) moveCandidate(move.dataset.moveCandidate);
-  const note = event.target.closest('[data-private-note]');
-  if (note) { const state = getState(); const app = state.employerApplications.find(a => a.id === note.dataset.privateNote); const value = window.prompt(`Private note for ${app.name}:`, app.privateNote || ''); if (value !== null) { app.privateNote = value; saveState(state); showToast('Private employer note saved.'); } }
-  const invite = event.target.closest('[data-invite-candidate]');
-  if (invite) { const candidate = (window.DEMO_PROFILES || []).find(c => c.id === invite.dataset.inviteCandidate); if (candidate) showToast(`Invitation sent to ${candidate.display_name} in this demo.`); }
 });
 
-document.getElementById('resetDemoButton').addEventListener('click', () => { if (confirm('Reset all demo changes stored in this browser?')) resetDemoState(); });
-document.addEventListener('DOMContentLoaded', renderDashboard);
+document.addEventListener('DOMContentLoaded', function () {
+  const params = new URLSearchParams(window.location.search);
+  riDashLoad(params.get('role') === 'employer' ? 'employer' : 'candidate');
+});
