@@ -1,96 +1,64 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Create an employer account request on JobFromHome.in.">
-  <title>Employer Account — JobFromHome.in</title>
-  <style>
-    :root{--navy:#10203c;--blue:#3566f2;--muted:#66758d;--line:#dce5f0;--paper:#f6f8fc;--green:#15803d;--red:#b42318}*{box-sizing:border-box}body{margin:0;background:var(--paper);font-family:Arial,sans-serif;color:var(--navy)}.top{height:66px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 max(20px,5vw)}.brand{font-weight:800;text-decoration:none;color:var(--navy);font-size:18px}.brand b{color:var(--blue)}main{max-width:820px;margin:0 auto;padding:45px 20px 80px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:clamp(22px,5vw,40px);box-shadow:0 15px 45px rgba(16,32,60,.07)}.back{color:var(--blue);font-size:13px;font-weight:700;text-decoration:none}.eyebrow{margin:28px 0 10px;color:var(--blue);font-size:11px;letter-spacing:.12em;font-weight:800;text-transform:uppercase}h1{margin:0;font-size:clamp(30px,5vw,46px);letter-spacing:-.055em;line-height:1.05}p{line-height:1.6}.intro{color:var(--muted);max-width:680px}.notice{margin:22px 0 0;padding:13px 15px;border:1px solid #ffd990;background:#fff8e5;border-radius:11px;color:#775413;font-size:12px;line-height:1.55}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:28px}.field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}label{font-size:12px;font-weight:800;color:#4f5f77}input,select,textarea{width:100%;border:1px solid #cbd7e7;border-radius:10px;padding:12px;color:var(--navy);font:inherit;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #e7edff}textarea{min-height:105px;resize:vertical}.consent{grid-column:1/-1;display:flex;align-items:flex-start;gap:9px;margin-top:3px;color:var(--muted);font-size:12px;line-height:1.5}.consent input{width:auto;margin-top:3px}.button{grid-column:1/-1;background:var(--blue);border:0;color:#fff;border-radius:10px;padding:14px;font-size:14px;font-weight:800;cursor:pointer}.button:disabled{opacity:.65;cursor:wait}.message{grid-column:1/-1;min-height:22px;margin:0;font-size:13px}.payment{margin-top:24px;padding:20px;border-radius:13px;background:#edf4ff;border:1px solid #ceddff}.payment h2{margin:0 0 8px;font-size:20px}.payment p{margin:0;color:#536985;font-size:13px}@media(max-width:600px){.form-grid{grid-template-columns:1fr}.field.full,.consent,.button,.message{grid-column:auto}}
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Submit a verified remote internship requirement." />
+  <title>Post remote internship — RemoteIntern</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="top"><a class="brand" href="index.html">JobFrom<b>Home</b>.in</a></header>
-  <main>
-    <section class="card">
-      <a class="back" href="index.html">← Back to home</a>
-      <p class="eyebrow">Employer account</p>
-      <h1>Hire remote talent</h1>
-      <p class="intro">Submit your company and first job requirement for review. Your job will not be published until employer verification and confirmed payment are complete.</p>
-      <div class="notice"><strong>Employer Starter:</strong> ₹590 total, including ₹500 plus 18% GST (₹90). It includes one approved job listing for 30 days. Never request money, OTPs, deposits, training fees, or banking details from candidates.</div>
+  <header class="site-header"><a class="brand" href="index.html"><span class="brand-mark">RI</span><span>RemoteIntern</span></a><nav class="nav"><a href="app.html">Find internships</a><a href="dashboard.html">Candidate dashboard</a><a class="active-nav" href="employer.html">For employers</a></nav><a class="button button-primary header-cta" href="dashboard.html?role=employer">Employer workspace</a></header>
 
+  <main class="form-page">
+    <section class="form-intro"><p class="eyebrow">Employer account</p><h1>Post a remote internship requirement.</h1><p>Submit company information and internship details for review. Your internship is not published until company verification and admin approval are complete.</p><div class="report-box"><strong>Candidate safety rule:</strong> Never ask candidates for money, deposits, training fees, OTPs, passwords, PINs or banking information.</div></section>
+
+    <section class="form-card">
       <form id="employerForm" novalidate>
+        <h2>Company information</h2>
         <div class="form-grid">
-          <div class="field"><label for="contactName">Your full name *</label><input id="contactName" name="contactName" required maxlength="80" autocomplete="name" placeholder="Hiring contact name"></div>
-          <div class="field"><label for="businessEmail">Work email *</label><input id="businessEmail" name="businessEmail" required type="email" maxlength="120" autocomplete="email" placeholder="name@company.com"></div>
-          <div class="field"><label for="employerPhone">Mobile / WhatsApp *</label><input id="employerPhone" name="employerPhone" required type="tel" inputmode="tel" maxlength="15" autocomplete="tel" placeholder="10-digit mobile number"></div>
-          <div class="field"><label for="companyName">Company legal name *</label><input id="companyName" name="companyName" required maxlength="150" placeholder="Company name"></div>
-          <div class="field"><label for="companyWebsite">Company website</label><input id="companyWebsite" name="companyWebsite" type="url" maxlength="255" placeholder="https://company.com"></div>
-          <div class="field"><label for="gstin">GSTIN (optional)</label><input id="gstin" name="gstin" maxlength="15" placeholder="15-character GSTIN"></div>
-          <div class="field"><label for="companySize">Company size *</label><select id="companySize" name="companySize" required><option value="">Choose company size</option><option>1–10</option><option>11–50</option><option>51–200</option><option>201–500</option><option>500+</option></select></div>
-          <div class="field"><label for="industry">Industry *</label><input id="industry" name="industry" required maxlength="80" placeholder="e.g., SaaS, Agency, E-commerce"></div>
-          <div class="field full"><label for="firstJobTitle">First job title *</label><input id="firstJobTitle" name="firstJobTitle" required maxlength="140" placeholder="e.g., Remote Customer Support Executive"></div>
-          <div class="field full"><label for="hiringNote">Role and hiring note</label><textarea id="hiringNote" name="hiringNote" maxlength="1200" placeholder="Describe the genuine role, responsibilities, skills, work hours, and compensation. Never request a candidate payment."></textarea></div>
-          <label class="consent"><input id="consent" name="consent" type="checkbox" required><span>I confirm that the organisation and hiring information are genuine, candidates will not be charged any fee, and I accept the Terms, Privacy Notice, and employer review process.</span></label>
-          <button id="saveEmployerButton" class="button" type="submit">Submit employer account for review</button>
-          <p id="employerMessage" class="message" aria-live="polite"></p>
+          <div class="field"><label for="contactName">Contact name *</label><input id="contactName" name="contactName" required /></div>
+          <div class="field"><label for="businessEmail">Work email *</label><input id="businessEmail" name="businessEmail" type="email" required /></div>
+          <div class="field"><label for="employerPhone">Mobile number *</label><input id="employerPhone" name="employerPhone" inputmode="numeric" maxlength="10" required /></div>
+          <div class="field"><label for="companyName">Company name *</label><input id="companyName" name="companyName" required /></div>
+          <div class="field"><label for="companyWebsite">Company website</label><input id="companyWebsite" name="companyWebsite" type="url" placeholder="https://" /></div>
+          <div class="field"><label for="industry">Industry *</label><input id="industry" name="industry" required /></div>
+          <div class="field"><label for="companySize">Company size *</label><select id="companySize" name="companySize" required><option value="">Select size</option><option>1–10</option><option>11–50</option><option>51–200</option><option>201+</option></select></div>
+          <div class="field"><label for="gstin">GSTIN / registration number</label><input id="gstin" name="gstin" /></div>
         </div>
+
+        <div class="form-divider"></div>
+        <h2>Remote internship requirement</h2>
+        <div class="form-grid">
+          <div class="field"><label for="title">Internship title *</label><input id="title" name="title" placeholder="Example: Frontend Development Intern" required /></div>
+          <div class="field"><label for="category">Category *</label><select id="category" name="category" required><option value="">Select category</option><option>Web Development</option><option>Video Editing</option><option>Digital Marketing</option><option>Content Writing</option><option>UI/UX Design</option><option>Data Analysis</option><option>HR & Recruitment</option><option>Product Operations</option></select></div>
+          <div class="field"><label for="duration">Duration *</label><select id="duration" name="duration" required><option value="">Select duration</option><option value="2">2 months</option><option value="3">3 months</option><option value="4">4 months</option><option value="6">6 months</option></select></div>
+          <div class="field"><label for="deadline">Application deadline *</label><input id="deadline" name="deadline" type="date" required /></div>
+          <div class="field"><label for="openings">Number of openings *</label><input id="openings" name="openings" type="number" min="1" value="1" required /></div>
+          <div class="field"><label for="hours">Hours per week *</label><select id="hours" name="hours" required><option value="10">10 hours</option><option value="20" selected>20 hours</option><option value="30">30 hours</option><option value="40">40 hours</option></select></div>
+          <div class="field"><label for="stipendType">Stipend type *</label><select id="stipendType" name="stipendType" required><option value="">Select stipend type</option><option value="Paid">Paid</option><option value="Unpaid">Unpaid</option><option value="Negotiable">Negotiable</option></select></div>
+          <div class="field"><label for="stipend">Monthly stipend in INR</label><input id="stipend" name="stipend" type="number" min="0" placeholder="Example: 6000" /></div>
+          <div class="field"><label for="certificate">Certificate offered</label><select id="certificate" name="certificate"><option value="Yes">Yes</option><option value="No">No</option></select></div>
+          <div class="field"><label for="ppo">PPO possibility</label><select id="ppo" name="ppo"><option value="No">No</option><option value="Yes">Yes</option></select></div>
+          <div class="field full"><label for="skills">Required skills *</label><input id="skills" name="skills" placeholder="Example: HTML, CSS, JavaScript" required /></div>
+          <div class="field full"><label for="summary">Internship summary, responsibilities and learning outcomes *</label><textarea id="summary" name="summary" required></textarea></div>
+        </div>
+
+        <label class="consent"><input type="checkbox" name="remoteOnly" checked required /> This is a remote work-from-home internship only.</label>
+        <label class="consent"><input type="checkbox" name="safetyDeclaration" required /> I confirm that I will not charge any candidate a fee, request deposits, paid training, OTPs or banking information, or make misleading stipend/PPO claims.</label>
+        <p id="employerMessage" class="form-status" aria-live="polite"></p>
+        <div class="form-actions"><button class="button button-secondary" type="button" id="saveDraftButton">Save draft</button><button class="button button-primary" type="submit" id="saveEmployerButton">Submit for review</button></div>
       </form>
-
-<section id="employerPaymentCard" class="payment" hidden>
-  <h2>Employer request saved</h2>
-
-  <p>
-    Your employer account request has been saved successfully.
-    We will review your company information before any job is published.
-  </p>
-
-<p style="margin-top: 12px;">
-  Your request is pending company verification. You may pay the Employer
-  Starter fee now; the job will be published only after review and confirmed
-  payment.
-</p>
-
-<a
-  href="https://rzp.io/rzp/AXSrr53n"
-  target="_blank"
-  rel="noopener noreferrer"
-  style="
-    display: inline-block;
-    margin-top: 12px;
-    margin-right: 8px;
-    padding: 11px 14px;
-    border-radius: 9px;
-    background: #3566f2;
-    color: #ffffff;
-    font-size: 13px;
-    font-weight: 800;
-    text-decoration: none;
-  "
->
-  Pay ₹590 with Razorpay →
-</a>
-
-<a
-  href="login.html"
-  style="
-    display: inline-block;
-    margin-top: 12px;
-    padding: 11px 14px;
-    border-radius: 9px;
-    background: #ffffff;
-    border: 1px solid #cbd7e7;
-    color: #10203c;
-    font-size: 13px;
-    font-weight: 800;
-    text-decoration: none;
-  "
->
-  Login to employer workspace
-</a>
-</section>
     </section>
   </main>
+
+  <footer><p>© 2026 RemoteIntern. Remote internships only.</p><div><a href="index.html">Home</a><a href="app.html">Internships</a></div></footer>
+  <div class="toast" id="toast"></div>
+  <script src="demo-profiles.js"></script>
+  <script src="app.js"></script>
   <script src="employer.js"></script>
 </body>
 </html>
