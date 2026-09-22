@@ -1,47 +1,47 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Complete your JobFromHome.in professional profile.">
-  <title>Complete Profile — JobFromHome.in</title>
-  <style>
-    :root{--navy:#10203c;--blue:#3566f2;--muted:#66758d;--line:#dce5f0;--paper:#f6f8fc;--green:#15803d;--red:#b42318}*{box-sizing:border-box}body{margin:0;background:var(--paper);font-family:Arial,sans-serif;color:var(--navy)}.top{height:66px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 max(20px,5vw)}.brand{font-weight:800;text-decoration:none;color:var(--navy);font-size:18px}.brand b{color:var(--blue)}main{max-width:760px;margin:0 auto;padding:45px 20px 80px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:clamp(22px,5vw,40px);box-shadow:0 15px 45px rgba(16,32,60,.07)}.back{color:var(--blue);font-size:13px;font-weight:700;text-decoration:none}.eyebrow{margin:28px 0 10px;color:var(--blue);font-size:11px;letter-spacing:.12em;font-weight:800;text-transform:uppercase}h1{margin:0;font-size:clamp(30px,5vw,46px);letter-spacing:-.055em;line-height:1.05}p{line-height:1.6}.intro{color:var(--muted);max-width:620px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:28px}.field{display:flex;flex-direction:column;gap:7px}.field.full{grid-column:1/-1}label{font-size:12px;font-weight:800;color:#4f5f77}input,select,textarea{width:100%;border:1px solid #cbd7e7;border-radius:10px;padding:12px;color:var(--navy);font:inherit;outline:none}input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #e7edff}textarea{min-height:105px;resize:vertical}.consent{grid-column:1/-1;display:flex;align-items:flex-start;gap:9px;margin-top:3px;color:var(--muted);font-size:12px;line-height:1.5}.consent input{width:auto;margin-top:3px}.button{grid-column:1/-1;background:var(--blue);border:0;color:#fff;border-radius:10px;padding:14px;font-size:14px;font-weight:800;cursor:pointer}.button:disabled{opacity:.65;cursor:wait}.message{grid-column:1/-1;min-height:22px;margin:0;font-size:13px}.payment{margin-top:24px;padding:20px;border-radius:13px;background:#edf4ff;border:1px solid #ceddff}.payment h2{margin:0 0 8px;font-size:20px}.payment p{margin:0;color:#536985;font-size:13px}@media(max-width:600px){.form-grid{grid-template-columns:1fr}.field.full,.consent,.button,.message{grid-column:auto}}
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Browse verified remote internships." />
+  <title>Find remote internships — RemoteIntern</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="top"><a class="brand" href="index.html">JobFrom<b>Home</b>.in</a></header>
-  <main>
-    <section class="card">
-      <a class="back" href="index.html">← Back to home</a>
-      <p class="eyebrow">Job seeker profile</p>
-      <h1>Complete your profile</h1>
-      <p class="intro">Use accurate professional information. Creating a profile does not guarantee a job, employer response, interview, or selection.</p>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">RI</span><span>RemoteIntern</span></a>
+    <nav class="nav"><a class="active-nav" href="app.html">Find internships</a><a href="dashboard.html">Candidate dashboard</a><a href="dashboard.html?role=employer">Employer dashboard</a></nav>
+    <a class="button button-primary header-cta" href="dashboard.html">My dashboard</a>
+  </header>
 
-      <form id="seekerForm" novalidate>
-        <div class="form-grid">
-          <div class="field"><label for="fullName">Full name *</label><input id="fullName" name="fullName" required maxlength="80" autocomplete="name" placeholder="Your full name"></div>
-          <div class="field"><label for="email">Email address *</label><input id="email" name="email" required type="email" maxlength="120" autocomplete="email" placeholder="you@example.com"></div>
-          <div class="field"><label for="phone">Mobile / WhatsApp *</label><input id="phone" name="phone" required type="tel" inputmode="tel" maxlength="15" autocomplete="tel" placeholder="10-digit mobile number"></div>
-          <div class="field"><label for="city">Current city</label><input id="city" name="city" maxlength="60" placeholder="e.g., Amritsar"></div>
-          <div class="field full"><label for="headline">Professional headline *</label><input id="headline" name="headline" required maxlength="140" placeholder="e.g., Customer support associate with 2 years experience"></div>
-          <div class="field"><label for="experience">Experience *</label><select id="experience" name="experience" required><option value="">Choose experience</option><option>Fresher</option><option>0–1 years</option><option>1–3 years</option><option>3–5 years</option><option>5+ years</option></select></div>
-          <div class="field"><label for="workPreference">Work preference *</label><select id="workPreference" name="workPreference" required><option value="">Choose preference</option><option>Remote full-time</option><option>Remote part-time</option><option>Freelance / contract</option><option>Any remote role</option></select></div>
-          <div class="field full"><label for="skills">Skills *</label><input id="skills" name="skills" required maxlength="250" placeholder="e.g., Excel, customer support, CRM, communication"></div>
-          <div class="field full"><label for="portfolio">LinkedIn / portfolio URL</label><input id="portfolio" name="portfolio" type="url" maxlength="255" placeholder="https://"></div>
-          <div class="field full"><label for="summary">Professional summary</label><textarea id="summary" name="summary" maxlength="1200" placeholder="Briefly describe your professional experience and remote-work preferences."></textarea></div>
-          <label class="consent"><input id="consent" name="consent" type="checkbox" required><span>I accept the Terms and Privacy Policy and understand JobFromHome.in does not guarantee jobs, interviews, or selection.</span></label>
-          <button id="saveProfileButton" class="button" type="submit">Complete profile</button>
-          <p id="profileMessage" class="message" aria-live="polite"></p>
-        </div>
-      </form>
-
-      <section id="paymentCard" class="payment" hidden>
-        <h2>Profile saved</h2>
-        <p>Your profile has been saved successfully. Add Razorpay only after you confirm profile rows are appearing correctly in the Google Sheet.</p>
-      </section>
+  <main class="page-shell">
+    <section class="directory-hero">
+      <p class="eyebrow">Remote internship directory</p>
+      <h1>Find work-from-home internships.</h1>
+      <p>Search by skill, category, stipend and duration. Only verified employer internships should be displayed in production.</p>
     </section>
+
+    <section class="search-panel">
+      <div class="form-grid">
+        <div class="field"><label for="searchInput">Search</label><input id="searchInput" placeholder="Title, skill or company" /></div>
+        <div class="field"><label for="categoryFilter">Category</label><select id="categoryFilter"><option value="All">All categories</option></select></div>
+        <div class="field"><label for="stipendFilter">Stipend</label><select id="stipendFilter"><option value="All">Any stipend</option><option value="Paid">Paid</option><option value="Unpaid">Unpaid</option><option value="Negotiable">Negotiable</option></select></div>
+        <div class="field"><label for="durationFilter">Duration</label><select id="durationFilter"><option value="All">Any duration</option><option value="2">2 months</option><option value="3">3 months</option><option value="4">4 months</option><option value="6">6 months</option></select></div>
+      </div>
+    </section>
+
+    <section class="directory-meta"><p id="internshipCount">0 internships</p><p>Demo data is clearly marked and must not be used as real profiles or jobs.</p></section>
+    <section class="job-grid directory-grid" id="internshipGrid"></section>
   </main>
+
+  <dialog class="modal" id="internshipModal"><div class="modal-content"><button class="modal-close" data-close-modal aria-label="Close">×</button><p class="eyebrow">Remote internship</p><h2 id="modalTitle">Internship title</h2><p class="modal-intro" id="modalCompany"></p><div id="modalDetails"></div><div class="report-box">Safety reminder: never pay an employer and never share OTPs, passwords, PINs or banking details.</div><p class="form-status" id="applyMessage"></p><button class="button button-primary full" id="applyButton">Apply to this internship</button></div></dialog>
+
+  <footer><p>© 2026 RemoteIntern. Remote internships only.</p><div><a href="index.html">Home</a><a href="employer.html">For employers</a></div></footer>
+  <div class="toast" id="toast"></div>
+  <script src="demo-profiles.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
