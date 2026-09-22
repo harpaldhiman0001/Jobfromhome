@@ -1,134 +1,175 @@
-const APP_CONFIG = {
-  DEMO_MODE: true,
-  STORAGE_KEY: 'remoteintern_state_v1'
+/* RemoteIntern public internship directory — real backend version.
+   Paste your deployed Google Apps Script /exec endpoint below.
+   This file does not create demo users, demo internships, or localStorage records. */
+
+const REMOTEINTERN_CONFIG = {
+  APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwQ-PpxYJtLcPdFPiyWKswD-X0c6tJa6D3HAvrJJnUaf1lxPrEkoEOqmWkKq_6LRbODeg/exec'
 };
 
-const DEFAULT_STATE = {
-  candidate: {
-    id: 'candidate-demo-001',
-    name: 'Aarav Sharma',
-    email: 'candidate-demo@example.invalid',
-    headline: 'Frontend learner and video editor',
-    location: 'Faridabad, Haryana',
-    skills: ['HTML', 'CSS', 'JavaScript', 'Video Editing'],
-    availableFrom: '2026-10-01',
-    hours: '20 hours',
-    portfolio: 'https://example.com/demo-portfolio/aarav',
-    discoverable: true
-  },
-  savedInternshipIds: ['i2'],
-  applications: [
-    { id: 'app-001', internshipId: 'i1', status: 'Under review', appliedAt: '2026-09-20', note: 'Your profile is being reviewed by the employer.' },
-    { id: 'app-002', internshipId: 'i2', status: 'Task sent', appliedAt: '2026-09-17', note: 'Submit a 30-second sample edit before 26 Sep 2026.' },
-    { id: 'app-003', internshipId: 'i3', status: 'Interview invited', appliedAt: '2026-09-14', note: 'Confirm your online interview slot.' }
-  ],
-  internships: [
-    { id: 'i1', title: 'Frontend Development Intern', company: 'NexaEdge Labs', category: 'Web Development', duration: 3, stipendType: 'Paid', stipend: '₹6,000–₹9,000 / month', skills: ['HTML', 'CSS', 'JavaScript'], certificate: true, ppo: true, deadline: '2026-10-12', description: 'Build responsive interface components, test layouts and learn practical frontend workflows with a remote product team.', logo: 'NE', color: 'purple', status: 'Active', isDemo: true },
-    { id: 'i2', title: 'Video Editing Intern', company: 'StudioTrail', category: 'Video Editing', duration: 2, stipendType: 'Paid', stipend: '₹5,000 / month', skills: ['Premiere Pro', 'Reels', 'Storytelling'], certificate: true, ppo: false, deadline: '2026-10-06', description: 'Edit short-form video, music visuals and social content while building a professional remote editing portfolio.', logo: 'ST', color: 'orange', status: 'Active', isDemo: true },
-    { id: 'i3', title: 'Digital Marketing Intern', company: 'GrowthMint', category: 'Digital Marketing', duration: 3, stipendType: 'Paid', stipend: '₹4,000–₹7,000 / month', skills: ['SEO', 'Canva', 'Analytics'], certificate: true, ppo: true, deadline: '2026-10-15', description: 'Support SEO, content planning, social reporting and campaign analysis under a remote marketing mentor.', logo: 'GM', color: 'green', status: 'Active', isDemo: true },
-    { id: 'i4', title: 'UI/UX Design Intern', company: 'PixelPeak Studio', category: 'UI/UX Design', duration: 4, stipendType: 'Paid', stipend: '₹7,000 / month', skills: ['Figma', 'Wireframes', 'Design Systems'], certificate: true, ppo: false, deadline: '2026-10-19', description: 'Create interface concepts, wireframes and prototypes for digital products.', logo: 'PP', color: 'purple', status: 'Active', isDemo: true },
-    { id: 'i5', title: 'Content Writing Intern', company: 'WordHarbor', category: 'Content Writing', duration: 2, stipendType: 'Unpaid', stipend: 'Certificate + mentorship', skills: ['Writing', 'Research', 'SEO'], certificate: true, ppo: false, deadline: '2026-10-09', description: 'Research and write useful web content while learning editorial and SEO fundamentals.', logo: 'WH', color: 'orange', status: 'Active', isDemo: true },
-    { id: 'i6', title: 'Data Analysis Intern', company: 'MetricSpring', category: 'Data Analysis', duration: 3, stipendType: 'Paid', stipend: '₹6,000 / month', skills: ['Excel', 'SQL', 'Data Cleaning'], certificate: true, ppo: true, deadline: '2026-10-22', description: 'Work with business datasets, create clean reports and support analytics projects.', logo: 'MS', color: 'green', status: 'Active', isDemo: true }
-  ],
-  employer: {
-    id: 'employer-demo-001', companyName: 'NexaEdge Labs', industry: 'Software & Technology', website: 'https://example.com/nexaedge', size: '11–50', about: 'NexaEdge Labs builds practical tools for growing teams and works with remote interns on product initiatives.', verificationStatus: 'Approved demo account'
-  },
-  employerInternships: [{ id: 'employer-i1', title: 'Frontend Development Intern', company: 'NexaEdge Labs', category: 'Web Development', duration: 3, stipendType: 'Paid', stipend: '₹6,000 / month', skills: ['HTML', 'CSS', 'JavaScript'], certificate: true, ppo: true, deadline: '2026-10-12', description: 'Support frontend interface development and responsive testing.', logo: 'NE', color: 'purple', status: 'Active', applicants: 12, views: 186, saves: 34, isDemo: true }],
-  employerApplications: [
-    { id: 'ea1', name: 'Priya N.', headline: 'UI developer and Figma learner', skills: ['HTML', 'CSS', 'Figma'], availability: 'Immediate', status: 'Applied', privateNote: '' },
-    { id: 'ea2', name: 'Rohan K.', headline: 'Frontend learner with React projects', skills: ['JavaScript', 'React', 'Git'], availability: 'October', status: 'Under review', privateNote: '' },
-    { id: 'ea3', name: 'Meera S.', headline: 'Student developer and UI builder', skills: ['HTML', 'CSS', 'JavaScript'], availability: 'Immediate', status: 'Shortlisted', privateNote: '' },
-    { id: 'ea4', name: 'Kabir R.', headline: 'Portfolio-focused frontend candidate', skills: ['React', 'CSS', 'APIs'], availability: 'October', status: 'Task sent', privateNote: '' },
-    { id: 'ea5', name: 'Zoya A.', headline: 'Web developer with project experience', skills: ['JavaScript', 'Figma', 'Git'], availability: 'Immediate', status: 'Interview invited', privateNote: '' },
-    { id: 'ea6', name: 'Nikhil P.', headline: 'Remote-ready frontend intern', skills: ['HTML', 'CSS', 'JavaScript'], availability: 'October', status: 'Offer sent', privateNote: '' }
-  ]
-};
+function riEscapeHtml(value) {
+  return String(value ?? '').replace(/[&<>'"]/g, function (character) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character];
+  });
+}
 
-function clone(value) { return JSON.parse(JSON.stringify(value)); }
-function getState() {
-  try {
-    const saved = localStorage.getItem(APP_CONFIG.STORAGE_KEY);
-    return saved ? JSON.parse(saved) : clone(DEFAULT_STATE);
-  } catch (error) {
-    return clone(DEFAULT_STATE);
+function riDateText(value) {
+  if (!value) return '—';
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? '—' : date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function riShowToast(message) {
+  const toast = document.getElementById('toast');
+  if (!toast) return;
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(window.__riToastTimer);
+  window.__riToastTimer = setTimeout(function () { toast.classList.remove('show'); }, 3200);
+}
+
+async function riPostApi(payload) {
+  const url = REMOTEINTERN_CONFIG.APPS_SCRIPT_URL;
+  if (!url || url.includes('PASTE_YOUR')) throw new Error('Set REMOTEINTERN_CONFIG.APPS_SCRIPT_URL in app.js before using the live platform.');
+  const response = await fetch(url, {
+    method: 'POST',
+    redirect: 'follow',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(payload)
+  });
+  const text = await response.text();
+  let result;
+  try { result = JSON.parse(text); } catch (error) { throw new Error('The server returned an invalid response. Check the deployed Apps Script /exec URL.'); }
+  if (!response.ok || !result.success) {
+    const requestError = new Error(result.error || ('Request failed with status ' + response.status));
+    requestError.authExpired = result.authExpired;
+    throw requestError;
   }
-}
-function saveState(state) { localStorage.setItem(APP_CONFIG.STORAGE_KEY, JSON.stringify(state)); }
-function resetDemoState() { localStorage.removeItem(APP_CONFIG.STORAGE_KEY); window.location.reload(); }
-function escapeHtml(value) { return String(value ?? '').replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c])); }
-function statusClass(status) { return 'status-' + String(status || '').toLowerCase().replace(/\s+/g, '-'); }
-function dateText(value) { const date = new Date(value + 'T00:00:00'); return Number.isNaN(date.getTime()) ? '—' : date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }); }
-function showToast(message) { const toast = document.getElementById('toast'); if (!toast) return; toast.textContent = message; toast.classList.add('show'); clearTimeout(window.__toastTimer); window.__toastTimer = setTimeout(() => toast.classList.remove('show'), 3200); }
-function getAllInternships(state) { return [...state.internships.filter(i => i.status === 'Active'), ...state.employerInternships.filter(i => i.status === 'Active')]; }
-function getInternship(state, id) { return [...state.internships, ...state.employerInternships].find(i => i.id === id); }
-
-function internshipCard(internship, state) {
-  const saved = state.savedInternshipIds.includes(internship.id);
-  return `<article class="job-card">${internship.isDemo ? '<span class="sample-label">DEMO LISTING</span>' : ''}<div class="job-card-head"><span class="company-icon ${escapeHtml(internship.color || 'purple')}">${escapeHtml(internship.logo || 'RI')}</span><button class="icon-button save-internship" data-id="${escapeHtml(internship.id)}" aria-label="Save internship">${saved ? '★' : '☆'}</button></div><h3>${escapeHtml(internship.title)}</h3><p class="company-name">${escapeHtml(internship.company)} · Verified employer</p><div class="tags"><span>Remote</span><span>${escapeHtml(internship.category)}</span><span>${escapeHtml(internship.duration)} months</span></div><p class="salary">${escapeHtml(internship.stipend)}</p><div class="job-card-foot"><span>Apply by ${dateText(internship.deadline)}</span><button class="text-button view-internship" data-id="${escapeHtml(internship.id)}">View & apply →</button></div></article>`;
+  return result;
 }
 
-function setupPublicInternships() {
-  const state = getState();
-  const featured = document.getElementById('featuredInternships');
-  if (featured) featured.innerHTML = getAllInternships(state).slice(0, 3).map(i => internshipCard(i, state)).join('');
+function riSessionToken() {
+  return sessionStorage.getItem('jfh_session_token') || '';
+}
 
+function riInternshipCard(internship) {
+  const logo = String(internship.companyName || internship.company || 'RI').split(/\s+/).map(function (part) { return part.charAt(0); }).join('').slice(0, 2).toUpperCase();
+  const color = ['purple', 'orange', 'green'][Math.abs(String(internship.id || internship.title).length) % 3];
+  const title = internship.title || 'Remote Internship';
+  const company = internship.companyName || internship.company || 'Verified employer';
+  const stipend = internship.stipendText || internship.stipend || (internship.stipendType === 'Unpaid' ? 'Unpaid internship' : 'Stipend details available after review');
+  const deadline = riDateText(internship.deadline);
+  return '<article class="job-card">' +
+    '<div class="job-card-head"><span class="company-icon ' + color + '">' + riEscapeHtml(logo) + '</span></div>' +
+    '<h3>' + riEscapeHtml(title) + '</h3>' +
+    '<p class="company-name">' + riEscapeHtml(company) + ' · Verified employer</p>' +
+    '<div class="tags"><span>Remote</span><span>' + riEscapeHtml(internship.category || 'Internship') + '</span><span>' + riEscapeHtml(String(internship.durationMonths || internship.duration || '—')) + ' months</span></div>' +
+    '<p class="salary">' + riEscapeHtml(stipend) + '</p>' +
+    '<div class="job-card-foot"><span>Apply by ' + deadline + '</span><button class="text-button ri-view-internship" data-id="' + riEscapeHtml(internship.id) + '">View & apply →</button></div>' +
+  '</article>';
+}
+
+let riInternships = [];
+let riSelectedInternshipId = null;
+
+function riRenderInternships() {
   const grid = document.getElementById('internshipGrid');
-  if (!grid) return;
-  const categoryFilter = document.getElementById('categoryFilter');
-  const categories = ['All', ...new Set(getAllInternships(state).map(i => i.category))];
-  categoryFilter.innerHTML = categories.map(c => `<option value="${escapeHtml(c)}">${c === 'All' ? 'All categories' : escapeHtml(c)}</option>`).join('');
+  const featured = document.getElementById('featuredInternships');
+  const search = document.getElementById('searchInput');
+  const category = document.getElementById('categoryFilter');
+  const stipend = document.getElementById('stipendFilter');
+  const duration = document.getElementById('durationFilter');
+  const query = search ? search.value.trim().toLowerCase() : '';
+  const selectedCategory = category ? category.value : 'All';
+  const selectedStipend = stipend ? stipend.value : 'All';
+  const selectedDuration = duration ? duration.value : 'All';
 
-  function renderDirectory() {
-    const fresh = getState();
-    const query = String(document.getElementById('searchInput').value || '').toLowerCase().trim();
-    const category = categoryFilter.value;
-    const stipend = document.getElementById('stipendFilter').value;
-    const duration = document.getElementById('durationFilter').value;
-    const rows = getAllInternships(fresh).filter(i => {
-      const source = [i.title, i.company, i.category, ...(i.skills || [])].join(' ').toLowerCase();
-      return (!query || source.includes(query)) && (category === 'All' || i.category === category) && (stipend === 'All' || i.stipendType === stipend) && (duration === 'All' || String(i.duration) === duration);
-    });
-    document.getElementById('internshipCount').textContent = `${rows.length} internship${rows.length === 1 ? '' : 's'} found`;
-    grid.innerHTML = rows.length ? rows.map(i => internshipCard(i, fresh)).join('') : '<div class="empty-state directory-empty"><span>⌕</span><div><strong>No internships found</strong><p>Try a different skill, category, stipend, or duration.</p></div></div>';
+  const filtered = riInternships.filter(function (item) {
+    const searchable = [item.title, item.companyName, item.company, item.category].concat(item.skills || []).join(' ').toLowerCase();
+    const itemStipendType = item.stipendType || '';
+    const itemDuration = String(item.durationMonths || item.duration || '');
+    return (!query || searchable.includes(query)) &&
+      (selectedCategory === 'All' || item.category === selectedCategory) &&
+      (selectedStipend === 'All' || itemStipendType === selectedStipend) &&
+      (selectedDuration === 'All' || itemDuration === selectedDuration);
+  });
+
+  if (grid) {
+    document.getElementById('internshipCount').textContent = filtered.length + ' internship' + (filtered.length === 1 ? '' : 's') + ' found';
+    grid.innerHTML = filtered.length ? filtered.map(riInternshipCard).join('') : '<div class="empty-state directory-empty"><span>⌕</span><div><strong>No internships found</strong><p>Try another search or return later for newly approved opportunities.</p></div></div>';
   }
-  ['searchInput', 'categoryFilter', 'stipendFilter', 'durationFilter'].forEach(id => document.getElementById(id).addEventListener(id === 'searchInput' ? 'input' : 'change', renderDirectory));
-  renderDirectory();
+  if (featured) {
+    featured.innerHTML = riInternships.length ? riInternships.slice(0, 3).map(riInternshipCard).join('') : '<div class="empty-state"><span>⌕</span><div><strong>No internships are available yet</strong><p>Please return later for approved remote internship opportunities.</p></div></div>';
+  }
 }
 
-function setupInternshipActions() {
-  document.addEventListener('click', event => {
-    const save = event.target.closest('.save-internship');
-    const detail = event.target.closest('.view-internship');
-    if (save) {
-      const state = getState(); const id = save.dataset.id;
-      state.savedInternshipIds = state.savedInternshipIds.includes(id) ? state.savedInternshipIds.filter(x => x !== id) : [...state.savedInternshipIds, id];
-      saveState(state); setupPublicInternships(); showToast(state.savedInternshipIds.includes(id) ? 'Internship saved.' : 'Internship removed from saved list.');
+async function riLoadInternships() {
+  try {
+    const result = await riPostApi({ action: 'searchApprovedInternships' });
+    riInternships = Array.isArray(result.internships) ? result.internships : [];
+    const category = document.getElementById('categoryFilter');
+    if (category) {
+      const categories = ['All'].concat(Array.from(new Set(riInternships.map(function (item) { return item.category; }).filter(Boolean))));
+      category.innerHTML = categories.map(function (item) { return '<option value="' + riEscapeHtml(item) + '">' + (item === 'All' ? 'All categories' : riEscapeHtml(item)) + '</option>'; }).join('');
     }
-    if (detail) openInternshipModal(detail.dataset.id);
-  });
+    riRenderInternships();
+  } catch (error) {
+    const grid = document.getElementById('internshipGrid');
+    const featured = document.getElementById('featuredInternships');
+    const message = '<div class="empty-state"><span>!</span><div><strong>Internships could not be loaded</strong><p>' + riEscapeHtml(error.message) + '</p></div></div>';
+    if (grid) grid.innerHTML = message;
+    if (featured) featured.innerHTML = message;
+  }
 }
 
-function openInternshipModal(id) {
-  const state = getState(); const internship = getInternship(state, id); const modal = document.getElementById('internshipModal');
-  if (!internship || !modal) return;
-  document.getElementById('modalTitle').textContent = internship.title;
-  document.getElementById('modalCompany').textContent = `${internship.company} · Remote internship · ${internship.duration} months`;
-  document.getElementById('modalDetails').innerHTML = `<div class="tags modal-tags"><span>Remote only</span><span>${escapeHtml(internship.category)}</span><span>${escapeHtml(internship.stipend)}</span>${internship.certificate ? '<span>Certificate</span>' : ''}${internship.ppo ? '<span>PPO possible</span>' : ''}</div><p class="detail-copy">${escapeHtml(internship.description)}</p><h3 class="detail-heading">Required skills</h3><div class="tags modal-tags">${(internship.skills || []).map(skill => `<span>${escapeHtml(skill)}</span>`).join('')}</div><p class="detail-deadline">Application deadline: ${dateText(internship.deadline)}</p>`;
-  const button = document.getElementById('applyButton'); button.dataset.id = id;
-  document.getElementById('applyMessage').textContent = ''; modal.showModal();
-}
-
-function setupModalActions() {
+function riOpenInternship(id) {
+  const internship = riInternships.find(function (item) { return String(item.id) === String(id); });
   const modal = document.getElementById('internshipModal');
-  if (!modal) return;
-  document.addEventListener('click', event => { if (event.target.closest('[data-close-modal]')) modal.close(); });
-  document.getElementById('applyButton').addEventListener('click', function () {
-    const state = getState(); const internshipId = this.dataset.id;
-    const message = document.getElementById('applyMessage');
-    if (state.applications.some(a => a.internshipId === internshipId)) { message.textContent = 'You already applied to this internship. Track it in your candidate dashboard.'; message.className = 'form-status error'; return; }
-    state.applications.unshift({ id: `app-${Date.now()}`, internshipId, status: 'Applied', appliedAt: new Date().toISOString().slice(0, 10), note: 'Your application was submitted successfully.' });
-    saveState(state); message.textContent = 'Application submitted. Opening your candidate dashboard…'; message.className = 'form-status success'; setTimeout(() => { window.location.href = 'dashboard.html'; }, 800);
-  });
+  if (!internship || !modal) return;
+  riSelectedInternshipId = internship.id;
+  document.getElementById('modalTitle').textContent = internship.title || 'Remote Internship';
+  document.getElementById('modalCompany').textContent = (internship.companyName || internship.company || 'Verified employer') + ' · Remote internship';
+  document.getElementById('modalDetails').innerHTML = '<div class="tags modal-tags"><span>Remote only</span><span>' + riEscapeHtml(internship.category || 'Internship') + '</span><span>' + riEscapeHtml(internship.stipendText || internship.stipend || 'Stipend details available') + '</span></div>' +
+    '<p class="detail-copy">' + riEscapeHtml(internship.description || internship.summary || 'Internship information will be provided by the employer.') + '</p>' +
+    '<h3 class="detail-heading">Required skills</h3><div class="tags modal-tags">' + (internship.skills || []).map(function (skill) { return '<span>' + riEscapeHtml(skill) + '</span>'; }).join('') + '</div>' +
+    '<p class="detail-deadline">Application deadline: ' + riDateText(internship.deadline) + '</p>';
+  document.getElementById('applyMessage').textContent = '';
+  modal.showModal();
 }
 
-document.addEventListener('DOMContentLoaded', () => { setupPublicInternships(); setupInternshipActions(); setupModalActions(); });
+async function riApplyToInternship() {
+  const message = document.getElementById('applyMessage');
+  const token = riSessionToken();
+  if (!token) { window.location.href = 'login.html'; return; }
+  if (!riSelectedInternshipId) return;
+  const button = document.getElementById('applyButton');
+  button.disabled = true;
+  button.textContent = 'Submitting application…';
+  try {
+    await riPostApi({ action: 'applyToInternship', token: token, internshipId: riSelectedInternshipId });
+    message.className = 'form-status success';
+    message.textContent = 'Application submitted successfully. Opening your dashboard…';
+    setTimeout(function () { window.location.href = 'dashboard.html'; }, 700);
+  } catch (error) {
+    message.className = 'form-status error';
+    message.textContent = error.message;
+    if (error.authExpired) setTimeout(function () { window.location.href = 'login.html'; }, 900);
+  } finally {
+    button.disabled = false;
+    button.textContent = 'Apply to this internship';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  riLoadInternships();
+  ['searchInput', 'categoryFilter', 'stipendFilter', 'durationFilter'].forEach(function (id) {
+    const element = document.getElementById(id);
+    if (element) element.addEventListener(id === 'searchInput' ? 'input' : 'change', riRenderInternships);
+  });
+  document.addEventListener('click', function (event) {
+    const view = event.target.closest('.ri-view-internship');
+    if (view) riOpenInternship(view.dataset.id);
+    if (event.target.closest('[data-close-modal]')) document.getElementById('internshipModal').close();
+  });
+  const apply = document.getElementById('applyButton');
+  if (apply) apply.addEventListener('click', riApplyToInternship);
+});
