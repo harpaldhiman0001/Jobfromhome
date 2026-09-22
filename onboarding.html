@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Set up your account | JobFromHome</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="auth-page">
+  <main class="auth-shell">
+    <a class="brand" href="index.html">Job<span>FromHome</span></a>
+    <section class="auth-card onboarding-card">
+      <div id="loadingState" class="loading-card">Loading your secure account…</div>
+      <form id="onboardingForm" hidden>
+        <p class="eyebrow">Welcome</p>
+        <h1>Set up your workspace</h1>
+        <p class="auth-copy">Choose how you want to use JobFromHome. You can complete your profile after this step.</p>
+        <label for="fullName">Your full name</label>
+        <input id="fullName" name="fullName" type="text" maxlength="100" autocomplete="name" required>
+        <fieldset class="role-choices">
+          <legend>I want to</legend>
+          <label class="role-choice"><input type="radio" name="role" value="candidate" checked><span><strong>Find remote work</strong><small>Create a profile, apply free, and track applications.</small></span></label>
+          <label class="role-choice"><input type="radio" name="role" value="employer"><span><strong>Hire remote talent</strong><small>Create a company profile and submit opportunities for verification.</small></span></label>
+        </fieldset>
+        <label class="consent-row"><input type="checkbox" required><span>I agree to the <a href="terms.html">Terms</a>, <a href="privacy.html">Privacy Policy</a>, and candidate safety rules.</span></label>
+        <button id="continueButton" class="button button-primary button-full" type="submit">Continue</button>
+        <p id="onboardingMessage" class="form-message" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/onboarding.js"></script>
+</body>
+</html>

@@ -1,25 +1,34 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login — JobFromHome.in</title>
-  <style>:root{--navy:#10203c;--blue:#3566f2;--muted:#66758d;--line:#dce5f0;--paper:#f6f8fc}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--navy);font-family:Arial,sans-serif}.top{height:66px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 max(20px,5vw)}.brand{font-weight:800;text-decoration:none;color:var(--navy);font-size:18px}.brand b{color:var(--blue)}main{min-height:calc(100vh - 66px);display:grid;place-items:center;padding:30px 20px}.card{width:min(460px,100%);padding:34px;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 15px 45px rgba(16,32,60,.07)}.eyebrow{margin:0 0 10px;color:var(--blue);font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}h1{margin:0;font-size:34px;letter-spacing:-.055em}p{color:var(--muted);line-height:1.6;font-size:14px}.field{display:flex;flex-direction:column;gap:7px;margin-top:19px}.field label{font-size:12px;font-weight:800;color:#4f5f77}input{border:1px solid #cbd7e7;border-radius:10px;padding:13px;font:inherit;outline:none}input:focus{border-color:var(--blue);box-shadow:0 0 0 3px #e7edff}.button{width:100%;margin-top:19px;border:0;border-radius:10px;padding:14px;background:var(--blue);color:#fff;font-size:14px;font-weight:800;cursor:pointer}.button:disabled{opacity:.65}.message{min-height:20px;margin:13px 0 0;font-size:13px;font-weight:600}.code-box{display:none}.code-box.show{display:block}.small{font-size:12px;margin-top:20px}.link{color:var(--blue);font-weight:700;text-decoration:none}</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Sign in to JobFromHome to find verified remote internships and work-from-home roles.">
+  <title>Sign in | JobFromHome</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-  <header class="top"><a class="brand" href="index.html">JobFrom<b>Home</b>.in</a></header>
-  <main><section class="card"><p class="eyebrow">Secure access</p><h1>Log in to your profile</h1><p>Enter the email address used when you created your JobFromHome.in profile. We will send a one-time login code.</p>
-    <form id="loginForm" novalidate>
-      <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required></div>
-      <button id="sendCodeButton" class="button" type="submit">Send login code</button>
-      <p id="loginMessage" class="message" aria-live="polite"></p>
-    </form>
-    <form id="codeForm" class="code-box" novalidate>
-      <div class="field"><label for="code">6-digit login code</label><input id="code" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="123456" required></div>
-      <button id="verifyCodeButton" class="button" type="submit">Verify and continue</button>
-      <p id="codeMessage" class="message" aria-live="polite"></p>
-    </form>
-    <p class="small">New user? <a class="link" href="app.html">Create job-seeker profile</a> or <a class="link" href="employer.html">create employer account</a>.</p>
-  </section></main>
-  <script src="login.js"></script>
+<body class="auth-page">
+  <main class="auth-shell">
+    <a class="brand" href="index.html">Job<span>FromHome</span></a>
+    <section class="auth-card">
+      <p class="eyebrow">Secure sign in</p>
+      <h1>Find real remote opportunities.</h1>
+      <p class="auth-copy">Candidates apply free. Employers can create verified company workspaces.</p>
+      <form id="magicLinkForm" novalidate>
+        <label for="email">Email address</label>
+        <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required>
+        <button id="sendLinkButton" class="button button-primary button-full" type="submit">Email me a sign-in link</button>
+        <p id="loginMessage" class="form-message" aria-live="polite"></p>
+      </form>
+      <div class="auth-divider"><span>or</span></div>
+      <button id="googleButton" class="button button-secondary button-full" type="button">Continue with Google</button>
+      <p class="auth-note">By continuing, you agree to our <a href="terms.html">Terms</a>, <a href="privacy.html">Privacy Policy</a>, and <a href="safety.html">Safety Rules</a>.</p>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/supabase-client.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/login.js"></script>
 </body>
 </html>

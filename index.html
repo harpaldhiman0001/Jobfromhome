@@ -1,81 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Find verified remote internships. Track applications, tasks, interviews and offers in one place." />
-  <title>RemoteIntern — Remote internships only</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Find verified work-from-home internships and remote jobs in India. Candidates apply free.">
+  <title>JobFromHome | Verified remote internships and jobs</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="index.html"><span class="brand-mark">RI</span><span>RemoteIntern</span></a>
-    <nav class="nav" aria-label="Main navigation">
-      <a href="app.html">Find internships</a>
-      <a href="dashboard.html">Candidate dashboard</a>
-      <a href="dashboard.html?role=employer">Employer dashboard</a>
+    <a class="brand" href="index.html">Job<span>FromHome</span></a>
+    <nav class="site-nav" aria-label="Main navigation">
+      <a href="app.html">Find work</a>
+      <a href="employer.html">For employers</a>
+      <a href="blogs.html">Career guides</a>
+      <a href="safety.html">Safety</a>
+      <a class="button button-small button-secondary" href="login.html">Sign in</a>
     </nav>
-    <a class="button button-primary header-cta" href="app.html">Explore internships</a>
   </header>
-
   <main>
-    <section class="hero">
-      <div>
-        <p class="eyebrow"><span class="pulse"></span>Remote work-from-home internships only</p>
-        <h1>Start your career from <em>where you are.</em></h1>
-        <p class="hero-text">Discover verified remote internships, build experience with real projects, and track every application, task, interview and offer in one secure workspace.</p>
+    <section class="hero-section">
+      <div class="hero-copy">
+        <p class="eyebrow">Remote work, built on trust</p>
+        <h1>Find verified work-from-home opportunities.</h1>
+        <p class="hero-text">Build experience with legitimate remote internships and entry-level roles. Applications are free for candidates, and every public listing is reviewed before publication.</p>
         <div class="hero-actions">
-          <a class="button button-primary" href="app.html">Explore internships <span>→</span></a>
-          <a class="button button-secondary" href="employer.html">Post an internship</a>
+          <a class="button button-primary" href="app.html">Browse opportunities</a>
+          <a class="button button-secondary" href="employer.html">Post an opportunity</a>
         </div>
-        <p class="hero-note">No candidate application fees. Never share OTPs, passwords, PINs or banking details.</p>
+        <p class="hero-note">Never pay to apply. Never share OTPs, passwords, PINs, UPI PINs, or banking credentials.</p>
       </div>
-
-      <aside class="hero-card" aria-label="Featured remote internships">
-        <div class="card-top"><span class="mini-logo">RI</span> New remote internships <span class="verified">● Employer reviewed</span></div>
-        <div class="job-preview"><span class="company-icon purple">NE</span><div><p class="job-title">Frontend Development Intern</p><p class="job-meta">NexaEdge · 3 months · ₹6k–₹9k/month</p></div><b>→</b></div>
-        <div class="job-preview"><span class="company-icon orange">ST</span><div><p class="job-title">Video Editing Intern</p><p class="job-meta">StudioTrail · 2 months · Remote</p></div><b>→</b></div>
-        <div class="job-preview"><span class="company-icon green">GM</span><div><p class="job-title">Digital Marketing Intern</p><p class="job-meta">GrowthMint · Certificate + PPO possible</p></div><b>→</b></div>
-        <p class="preview-disclaimer">Demo cards shown for interface preview. Publish only approved employer internship requirements.</p>
+      <aside class="hero-panel">
+        <div class="trust-pill">✓ Candidate applications are free</div>
+        <div class="trust-pill">✓ Employer verification workflow</div>
+        <div class="trust-pill">✓ Application tracking in one dashboard</div>
+        <div class="trust-pill">✓ Built for remote work in India</div>
       </aside>
     </section>
-
-    <section class="trust-strip" aria-label="Platform policies">
-      <div><strong>Remote only</strong><span>Every listing is a work-from-home internship.</span></div>
-      <div><strong>Employer review</strong><span>Company and internship details are reviewed before publishing.</span></div>
-      <div><strong>Full tracking</strong><span>Track applications, tasks, interviews and offers.</span></div>
-      <div><strong>Safer hiring</strong><span>Fees, deposits and unsafe requests are prohibited.</span></div>
-    </section>
-
-    <section class="section jobs-section">
-      <div class="section-heading">
-        <div><p class="eyebrow">Featured opportunities</p><h2>Find a remote internship</h2></div>
-        <p>Browse fictional interface demo listings now. In production, this section must load only verified, admin-approved employer listings.</p>
-      </div>
-      <div class="job-grid" id="featuredInternships"></div>
-      <div class="empty-state"><span>✓</span><div><strong>Build your candidate profile first</strong><p>Add skills, availability and a portfolio to receive better internship matches.</p></div><a class="button button-secondary" href="dashboard.html">Open candidate dashboard</a></div>
-    </section>
-
-    <section class="how-section section">
-      <div class="section-heading centered"><div><p class="eyebrow">How it works</p><h2>A safer remote internship workflow</h2></div><p>Every key action has a clear owner, status and timeline.</p></div>
-      <div class="steps">
-        <article><span>01</span><h3>Create a profile</h3><p>Add your skills, portfolio, availability and internship preferences.</p></article>
-        <article><span>02</span><h3>Find internships</h3><p>Search remote opportunities by category, stipend and duration.</p></article>
-        <article><span>03</span><h3>Track every step</h3><p>See application, task, interview and offer updates in your dashboard.</p></article>
-        <article><span>04</span><h3>Build experience</h3><p>Complete the internship and grow a portfolio of real work.</p></article>
+    <section class="section-shell">
+      <div class="section-heading"><p class="eyebrow">How it works</p><h2>A safer route to your next remote role.</h2></div>
+      <div class="feature-grid">
+        <article class="feature-card"><span>1</span><h3>Create your profile</h3><p>Add skills, availability, education, and a portfolio so suitable employers can find you.</p></article>
+        <article class="feature-card"><span>2</span><h3>Apply with confidence</h3><p>Browse verified remote listings by skill, category, stipend, and internship duration.</p></article>
+        <article class="feature-card"><span>3</span><h3>Track every update</h3><p>See review, assignment, interview, offer, and hiring updates in your secure dashboard.</p></article>
       </div>
     </section>
-
-    <section class="safety-section">
-      <div><p class="eyebrow">Candidate safety</p><h2>Never pay to get an internship.</h2></div>
-      <div><p>Verified employers must never ask candidates for application fees, deposits, paid training, OTPs, passwords, UPI PINs or banking credentials.</p><a class="button button-dark" href="app.html">Browse safely</a></div>
-    </section>
+    <section class="safety-banner"><div><p class="eyebrow">Candidate safety</p><h2>No fees. No deposits. No shortcuts.</h2><p>Legitimate employers never ask candidates for application fees, paid training, OTPs, passwords, UPI PINs, or banking details.</p></div><a class="button button-secondary" href="safety.html">Read safety rules</a></section>
   </main>
-
-  <footer><p>© 2026 RemoteIntern. Remote internships only.</p><div><a href="app.html">Internships</a><a href="employer.html">For employers</a><a href="dashboard.html">Dashboard</a></div></footer>
-  <script src="app.js"></script>
+  <footer class="site-footer"><a class="brand" href="index.html">Job<span>FromHome</span></a><div><a href="safety.html">Safety</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refunds.html">Refunds</a></div></footer>
 </body>
 </html>
