@@ -1,131 +1,94 @@
-/* JobFromHome.in employer account form.
-   Save as employer.js beside employer.html.
-   Paste the SAME deployed Apps Script /exec URL used in app.js. */
+function cleanPhone(value) { return String(value || '').replace(/\D/g, '').slice(-10); }
+function validPhone(phone) { return /^[6-9]\d{9}$/.test(phone); }
+function validEmail(email) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || '')); }
 
-const EMPLOYER_CONFIG = {
-  APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwQ-PpxYJtLcPdFPiyWKswD-X0c6tJa6D3HAvrJJnUaf1lxPrEkoEOqmWkKq_6LRbODeg/exec',
-  ENABLE_APPS_SCRIPT: true
-};
-
-const employerForm = document.getElementById('employerForm');
-const employerMessage = document.getElementById('employerMessage');
-const saveEmployerButton = document.getElementById('saveEmployerButton');
-const employerPaymentCard = document.getElementById('employerPaymentCard');
-
-function employerShowMessage(text, isError) {
-  employerMessage.textContent = text;
-  employerMessage.style.color = isError ? '#b42318' : '#15803d';
-  employerMessage.style.fontWeight = '600';
+function employerMessage(text, type) {
+  const target = document.getElementById('employerMessage');
+  target.className = `form-status ${type || ''}`;
+  target.textContent = text;
 }
 
-function employerCleanPhone(value) {
-  return String(value || '').replace(/\D/g, '').slice(-10);
+function formToInternship(form) {
+  const data = new FormData(form);
+  const stipendType = String(data.get('stipendType') || '');
+  const stipendValue = Number(data.get('stipend') || 0);
+  return {
+    id: `employer-i-${Date.now()}`,
+    title: String(data.get('title') || '').trim(),
+    company: String(data.get('companyName') || '').trim(),
+    category: String(data.get('category') || '').trim(),
+    duration: Number(data.get('duration') || 0),
+    stipendType,
+    stipend: stipendType === 'Paid' ? `₹${stipendValue.toLocaleString('en-IN')} / month` : stipendType,
+    skills: String(data.get('skills') || '').split(',').map(s => s.trim()).filter(Boolean),
+    certificate: data.get('certificate') === 'Yes',
+    ppo: data.get('ppo') === 'Yes',
+    deadline: String(data.get('deadline') || ''),
+    description: String(data.get('summary') || '').trim(),
+    logo: String(data.get('companyName') || 'RI').split(/\s+/).map(x => x[0]).join('').slice(0, 2).toUpperCase(),
+    color: 'purple',
+    status: 'Pending review',
+    applicants: 0,
+    views: 0,
+    saves: 0,
+    isDemo: false
+  };
 }
 
-function employerValidPhone(phone) {
-  return /^[6-9]\d{9}$/.test(phone);
+function validateEmployerForm(form) {
+  const data = new FormData(form);
+  const required = ['contactName', 'businessEmail', 'employerPhone', 'companyName', 'industry', 'companySize', 'title', 'category', 'duration', 'deadline', 'openings', 'hours', 'stipendType', 'skills', 'summary'];
+  for (const field of required) if (!String(data.get(field) || '').trim()) return 'Complete all required fields.';
+  const phone = cleanPhone(data.get('employerPhone'));
+  if (!validPhone(phone)) return 'Enter a valid 10-digit Indian mobile number.';
+  if (!validEmail(data.get('businessEmail'))) return 'Enter a valid work email address.';
+  if (new Date(`${data.get('deadline')}T23:59:59`) <= new Date()) return 'Application deadline must be in the future.';
+  if (data.get('stipendType') === 'Paid' && Number(data.get('stipend') || 0) <= 0) return 'Enter a valid stipend for a paid internship.';
+  if (data.get('remoteOnly') !== 'on') return 'This platform accepts remote work-from-home internships only.';
+  if (data.get('safetyDeclaration') !== 'on') return 'Accept the candidate safety declaration before submitting.';
+  return '';
 }
 
-function employerValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || ''));
-}
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('employerForm');
+  if (!form) return;
 
-async function employerParseJson(response) {
-  const text = await response.text();
-  try {
-    return JSON.parse(text);
-  } catch (error) {
-    console.error('Apps Script returned HTML/non-JSON:', {
-      status: response.status,
-      url: response.url,
-      responseText: text
-    });
-    throw new Error('Employer server returned HTML instead of JSON. Check your Apps Script /exec URL and deployment access.');
-  }
-}
-
-async function saveEmployer(data) {
-  if (!EMPLOYER_CONFIG.ENABLE_APPS_SCRIPT) {
-    throw new Error('Google Sheets saving is disabled. Set ENABLE_APPS_SCRIPT to true.');
-  }
-
-  if (!EMPLOYER_CONFIG.APPS_SCRIPT_URL || EMPLOYER_CONFIG.APPS_SCRIPT_URL.includes('PASTE_YOUR')) {
-    throw new Error('Paste your Apps Script Web App URL ending in /exec into employer.js first.');
-  }
-
-  const response = await fetch(EMPLOYER_CONFIG.APPS_SCRIPT_URL, {
-    method: 'POST',
-    redirect: 'follow',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify({
-      action: 'createLead',
-      leadType: 'employer',
-      ...data
-    })
-  });
-
-  const result = await employerParseJson(response);
-  if (!response.ok) throw new Error(result.error || ('Employer server returned HTTP ' + response.status));
-  if (result.success !== true) throw new Error(result.error || 'Employer account was not saved.');
-  return result;
-}
-
-if (!employerForm || !employerMessage || !saveEmployerButton || !employerPaymentCard) {
-  console.warn('employer.js loaded on a page without the employer form. Load employer.js only from employer.html.');
-} else {
-  employerForm.addEventListener('submit', async function(event) {
-    event.preventDefault();
-
-    const formData = new FormData(employerForm);
-    const data = {
-      contactName: String(formData.get('contactName') || '').trim(),
-      businessEmail: String(formData.get('businessEmail') || '').trim().toLowerCase(),
-      employerPhone: employerCleanPhone(formData.get('employerPhone')),
-      companyName: String(formData.get('companyName') || '').trim(),
-      companyWebsite: String(formData.get('companyWebsite') || '').trim(),
-      gstin: String(formData.get('gstin') || '').trim().toUpperCase(),
-      companySize: String(formData.get('companySize') || '').trim(),
-      industry: String(formData.get('industry') || '').trim(),
-      firstJobTitle: String(formData.get('firstJobTitle') || '').trim(),
-      hiringNote: String(formData.get('hiringNote') || '').trim(),
-      consent: formData.get('consent') === 'on'
+  document.getElementById('saveDraftButton').addEventListener('click', () => {
+    const state = getState();
+    const internship = formToInternship(form);
+    internship.status = 'Draft';
+    state.employerDraft = internship;
+    state.employer = {
+      ...state.employer,
+      companyName: String(new FormData(form).get('companyName') || state.employer.companyName).trim(),
+      industry: String(new FormData(form).get('industry') || state.employer.industry).trim(),
+      website: String(new FormData(form).get('companyWebsite') || state.employer.website).trim(),
+      size: String(new FormData(form).get('companySize') || state.employer.size).trim()
     };
-
-    if (!data.contactName || !data.companyName || !data.companySize || !data.industry || !data.firstJobTitle) {
-      employerShowMessage('Complete every required employer field.', true);
-      return;
-    }
-
-    if (!employerValidEmail(data.businessEmail)) {
-      employerShowMessage('Enter a valid work email address.', true);
-      return;
-    }
-
-    if (!employerValidPhone(data.employerPhone)) {
-      employerShowMessage('Enter a valid 10-digit Indian mobile number beginning with 6, 7, 8, or 9.', true);
-      return;
-    }
-
-    if (!data.consent) {
-      employerShowMessage('Accept the Terms and employer review conditions before submitting.', true);
-      return;
-    }
-
-    saveEmployerButton.disabled = true;
-    saveEmployerButton.textContent = 'Saving employer request…';
-    employerShowMessage('Saving your employer request. Please wait…', false);
-
-    try {
-      const result = await saveEmployer(data);
-      employerShowMessage('Employer request saved successfully. Your ID is ' + (result.id || 'created') + '.', false);
-      employerPaymentCard.hidden = false;
-      saveEmployerButton.textContent = 'Employer request saved ✓';
-      employerForm.dataset.saved = 'true';
-    } catch (error) {
-      console.error('Employer account save failed:', error);
-      employerShowMessage(error.message || 'Employer account could not be saved. Please try again.', true);
-      saveEmployerButton.disabled = false;
-      saveEmployerButton.textContent = 'Submit employer account for review';
-    }
+    saveState(state);
+    employerMessage('Draft saved in this browser. Submit it when all fields are complete.', 'success');
   });
-}
+
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const error = validateEmployerForm(form);
+    if (error) { employerMessage(error, 'error'); return; }
+    const state = getState();
+    const internship = formToInternship(form);
+    const data = new FormData(form);
+    state.employer = {
+      ...state.employer,
+      companyName: String(data.get('companyName')).trim(),
+      industry: String(data.get('industry')).trim(),
+      website: String(data.get('companyWebsite') || '').trim(),
+      size: String(data.get('companySize')).trim(),
+      verificationStatus: 'Pending verification'
+    };
+    state.employerInternships.unshift(internship);
+    delete state.employerDraft;
+    saveState(state);
+    employerMessage('Internship submitted for employer/admin review. It will remain private until approved.', 'success');
+    form.reset();
+    showToast('Remote internship submitted for review.');
+  });
+});
